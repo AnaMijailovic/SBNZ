@@ -15,6 +15,12 @@ public class DroolsTest {
 	        KieServices ks = KieServices.Factory.get();
     	    KieContainer kContainer = ks.getKieClasspathContainer();
         	KieSession kSession = kContainer.newKieSession("ksession-rules");
+        	HealthDataDTO hd = new HealthDataDTO();
+        	UserDataDTO ud = new UserDataDTO();
+        	ud.setWeight(52);
+        	ud.setHeight(158);
+        	kSession.insert(hd);
+        	kSession.insert(ud);
 
             // go !
             Message message = new Message();
@@ -22,6 +28,7 @@ public class DroolsTest {
             message.setStatus(Message.HELLO);
             kSession.insert(message);
             kSession.fireAllRules();
+            System.out.println(hd);
         } catch (Throwable t) {
             t.printStackTrace();
         }
