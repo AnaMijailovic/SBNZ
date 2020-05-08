@@ -1,0 +1,41 @@
+package com.sample
+ 
+import com.healthriskassessment.dto.UserDataDTO;
+import com.healthriskassessment.dto.HealthDataDTO;
+import com.healthriskassessment.dto.RiskDTO;
+import com.healthriskassessment.model.Risk;
+import com.healthriskassessment.model.enums.BMICategory;
+import com.healthriskassessment.model.enums.RiskLevel;
+
+rule "Stress level low risk"
+	when
+		$userData: UserDataDTO(stressLevel >= 4, stressLevel <= 5 )
+		$healthData: HealthDataDTO()
+		$stressRisk: Risk(name == "Stress")
+	then
+		RiskDTO risk = new RiskDTO($stressRisk.getName(), $stressRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Stress level medium risk"
+	when
+		$userData: UserDataDTO(stressLevel >= 6, stressLevel <= 7 )
+		$healthData: HealthDataDTO()
+		$stressRisk: Risk(name == "Stress")
+	then
+		RiskDTO risk = new RiskDTO($stressRisk.getName(), $stressRisk.getDescription(),
+		RiskLevel.MEDIUM);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Stress level high risk"
+	when
+		$userData: UserDataDTO(stressLevel >= 8 )
+		$healthData: HealthDataDTO()
+		$stressRisk: Risk(name == "Stress")
+	then
+		RiskDTO risk = new RiskDTO($stressRisk.getName(), $stressRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end

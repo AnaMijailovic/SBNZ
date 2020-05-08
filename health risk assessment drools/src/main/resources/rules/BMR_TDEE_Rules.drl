@@ -1,0 +1,73 @@
+package com.sample
+ 
+import com.healthriskassessment.dto.UserDataDTO;
+import com.healthriskassessment.dto.HealthDataDTO;
+import com.healthriskassessment.model.enums.BMICategory;
+import com.healthriskassessment.model.enums.Gender;
+import com.healthriskassessment.model.enums.ActivityLevel;
+
+// 10*weight + 6.25*height - 5*age -161 
+rule "Calculate BMR for women"
+	when 
+		$userData: UserDataDTO(gender == Gender.FEMALE, $weight: weight, $height: height, $age: age)
+	    $healthData: HealthDataDTO()
+	then
+		float bmr = 10*$weight + 6.25f*$height - 5*$age - 161;
+		modify($healthData) {setBmrValue(bmr);};
+end
+
+// 10*weight + 6.25*height - 5*age + 5 
+rule "Calculate BMR for men"
+	when 
+		$userData: UserDataDTO(gender == Gender.MALE, $weight: weight, $height: height, $age: age)
+	    $healthData: HealthDataDTO()
+	then
+		float bmr = 10*$weight + 6.25f*$height - 5*$age + 5;
+		modify($healthData) {setBmrValue(bmr);};
+end
+
+// Sedentary BMR * 1.2 
+rule "Calculate TDEE for sedentary"
+	when 
+		$userData: UserDataDTO(activityLevel == ActivityLevel.SEDENTARY)
+	    $healthData: HealthDataDTO(bmrValue != 0, $bmr: bmrValue)
+	then
+		modify($healthData) {setTdeeValue($bmr * 1.2f);};
+end
+
+// Lightly active BMR * 1.375 
+rule "Calculate TDEE for lightly active"
+	when 
+		$userData: UserDataDTO(activityLevel == ActivityLevel.LIGHTHLY_ACTIVE)
+	    $healthData: HealthDataDTO(bmrValue != 0, $bmr: bmrValue)
+	then
+		modify($healthData) {setTdeeValue($bmr * 1.375f);};
+end
+
+
+// Moderately active BMR * 1.55
+rule "Calculate TDEE for moderately active"
+	when 
+		$userData: UserDataDTO(activityLevel == ActivityLevel.MODERATELY_ACTIVE)
+	    $healthData: HealthDataDTO(bmrValue != 0, $bmr: bmrValue)
+	then
+		modify($healthData) {setTdeeValue($bmr * 1.55f);};
+end
+
+//  Very active BMR * 1.725 
+rule "Calculate TDEE for very active"
+	when 
+		$userData: UserDataDTO(activityLevel == ActivityLevel.VERY_ACTIVE)
+	    $healthData: HealthDataDTO(bmrValue != 0, $bmr: bmrValue)
+	then
+		modify($healthData) {setTdeeValue($bmr * 1.725f);};
+end
+
+// Super active BMR * 1.9 
+rule "Calculate TDEE for super active"
+	when 
+		$userData: UserDataDTO(activityLevel == ActivityLevel.SUPER_ACTIVE)
+	    $healthData: HealthDataDTO(bmrValue != 0, $bmr: bmrValue)
+	then
+		modify($healthData) {setTdeeValue($bmr * 1.9f);};
+end

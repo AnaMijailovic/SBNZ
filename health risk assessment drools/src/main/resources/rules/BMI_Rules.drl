@@ -1,0 +1,110 @@
+package com.sample
+ 
+import com.healthriskassessment.dto.UserDataDTO;
+import com.healthriskassessment.dto.HealthDataDTO;
+import com.healthriskassessment.dto.RiskDTO;
+import com.healthriskassessment.model.Risk;
+import com.healthriskassessment.model.enums.BMICategory;
+import com.healthriskassessment.model.enums.RiskLevel;
+
+rule "Calculate BMI"
+	when 
+		$userData: UserDataDTO($weight: weight, $height: height)
+	    $healthData: HealthDataDTO()
+	then
+		modify($healthData) {setBmiValue(($weight/($height*$height+0.0f))*10000);};
+		RiskDTO risk = new RiskDTO();
+end
+
+
+rule "BMI category severe thinness"
+	when
+		$healthData: HealthDataDTO(bmiValue < 16, bmiValue != 0)
+		$underweightRisk: Risk(name == "Underweight")
+	then
+		modify($healthData) {setBmiCategory(BMICategory.SEVERE_THINNESS);};
+		RiskDTO risk = new RiskDTO($underweightRisk.getName(), $underweightRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+
+rule "BMI category moderate thinness"
+	when
+		$healthData: HealthDataDTO(bmiValue >= 16, bmiValue < 17  )
+		$underweightRisk: Risk(name == "Underweight")
+	then
+		modify($healthData) {setBmiCategory(BMICategory.MODERATE_THINNESS);};
+		RiskDTO risk = new RiskDTO($underweightRisk.getName(), $underweightRisk.getDescription(),
+		RiskLevel.MEDIUM);
+		$healthData.getRisks().add(risk);
+end
+
+
+rule "BMI category mild thinness"
+	when
+		$healthData: HealthDataDTO(17 <= bmiValue, bmiValue < 18.5 )
+		$underweightRisk: Risk(name == "Underweight")
+	then
+		modify($healthData) {setBmiCategory(BMICategory.MILD_THINNESS);};
+		RiskDTO risk = new RiskDTO($underweightRisk.getName(), $underweightRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+
+rule "BMI category normal"
+	when
+		$healthData: HealthDataDTO(18.5 <= bmiValue, bmiValue < 25 )
+	then
+		modify($healthData) {setBmiCategory(BMICategory.NORMAL);};
+end
+
+
+rule "BMI category overweight"
+	when
+		$healthData: HealthDataDTO(25 <= bmiValue, bmiValue < 30 )
+		$obesityRisk: Risk(name == "Obesity")
+	then
+		modify($healthData) {setBmiCategory(BMICategory.OVERWEIGHT);};	
+		RiskDTO risk = new RiskDTO($obesityRisk.getName(), $obesityRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);	
+end
+
+
+rule "BMI category obese class I"
+	when
+		$healthData: HealthDataDTO(30 <= bmiValue, bmiValue < 35 )
+		$obesityRisk: Risk(name == "Obesity")
+	then
+		modify($healthData) {setBmiCategory(BMICategory.OBESE_CLASS_I);};
+		RiskDTO risk = new RiskDTO($obesityRisk.getName(), $obesityRisk.getDescription(),
+		RiskLevel.MEDIUM);
+		$healthData.getRisks().add(risk);			
+end
+
+
+rule "BMI category obese class II"
+	when
+		$healthData: HealthDataDTO(35 <= bmiValue, bmiValue < 40 )
+		$obesityRisk: Risk(name == "Obesity")
+	then
+		modify($healthData) {setBmiCategory(BMICategory.OBESE_CLASS_II);};	
+		RiskDTO risk = new RiskDTO($obesityRisk.getName(), $obesityRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);	
+end
+
+
+rule "BMI category obese class III"
+	when
+		$healthData: HealthDataDTO(bmiValue > 40 )
+		$obesityRisk: Risk(name == "Obesity")
+	then
+		modify($healthData) {setBmiCategory(BMICategory.OBESE_CLASS_III);};
+		RiskDTO risk = new RiskDTO($obesityRisk.getName(), $obesityRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+ 

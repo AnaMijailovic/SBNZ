@@ -19,7 +19,7 @@ public class HealthDataDTO {
 	private float tdeeValue;
 	private float kgTillNormal;
 	private int averageSleepLowerLimit;
-	private int averageSleepHigerLimit;
+	private int averageSleepHigherLimit;
 	private List<RiskDTO> risks;
 	private List<String> deseases;
 	

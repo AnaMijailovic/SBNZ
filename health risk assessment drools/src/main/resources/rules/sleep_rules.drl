@@ -1,0 +1,209 @@
+package com.sample
+ 
+import com.healthriskassessment.dto.UserDataDTO;
+import com.healthriskassessment.dto.HealthDataDTO;
+import com.healthriskassessment.model.enums.BMICategory;
+import com.healthriskassessment.model.enums.Gender;
+import com.healthriskassessment.model.enums.ActivityLevel;
+
+/*
+14 - 17   8 – 10   7 – 11 
+18 - 25   7 – 9    6 – 11 
+26 - 64   7 – 9    6 – 10
+65+       7 – 8    5 – 9 
+
+*/
+
+// ***************************************************************************
+//						SET RECOMMENDED SLEEP TIME
+// ***************************************************************************
+
+rule "Sleep for 14-17 age group"
+	when 
+		$userData: UserDataDTO(age > 14, age <= 17)
+	    $healthData: HealthDataDTO()
+	then
+		modify($healthData) {setAverageSleepLowerLimit(8);};
+		modify($healthData) {setAverageSleepHigherLimit(10);};
+end
+
+rule "Sleep for 18-64 age group"
+	when 
+		$userData: UserDataDTO(age >= 18, age <= 64)
+	    $healthData: HealthDataDTO()
+	then
+		modify($healthData) {setAverageSleepLowerLimit(7);};
+		modify($healthData) {setAverageSleepHigherLimit(9);};
+end
+
+rule "Sleep for 65+ age group"
+	when 
+		$userData: UserDataDTO(age >= 65)
+	    $healthData: HealthDataDTO()
+	then
+		modify($healthData) {setAverageSleepLowerLimit(7);};
+		modify($healthData) {setAverageSleepHigherLimit(9);};
+end
+
+// ***************************************************************************
+//						SLEEP DEPRIVATION LOW RISK
+// ***************************************************************************
+
+rule "Sleep for 14-17 age group sleep deprivation low risk"
+	when 
+		$userData: UserDataDTO(age >= 14, age <= 17, averageSleepTime > 420, averageSleepTime < 480)
+	    $healthData: HealthDataDTO()
+	    $sdRisk: Risk(name == "Sleep deprivation")
+	then
+		RiskDTO risk = new RiskDTO($sdRisk.getName(), $sdRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Sleep for 18-64 age group sleep deprivation low risk"
+	when 
+		$userData: UserDataDTO(age >= 18, age <= 64, averageSleepTime > 360, averageSleepTime < 420)
+	    $healthData: HealthDataDTO()
+	    $sdRisk: Risk(name == "Sleep deprivation")
+	then
+		RiskDTO risk = new RiskDTO($sdRisk.getName(), $sdRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+
+rule "Sleep for 65+ age group sleep deprivation low risk"
+	when 
+		$userData: UserDataDTO(age >= 65, averageSleepTime > 300, averageSleepTime < 420)
+	    $healthData: HealthDataDTO()
+	    $sdRisk: Risk(name == "Sleep deprivation")
+	then
+		RiskDTO risk = new RiskDTO($sdRisk.getName(), $sdRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+// ***************************************************************************
+//						SLEEP DEPRIVATION HIGH RISK
+// ***************************************************************************
+
+rule "Sleep for 14-17 age group sleep deprivation high risk"
+	when 
+		$userData: UserDataDTO(age >= 14, age <= 17, averageSleepTime < 420)
+	    $healthData: HealthDataDTO()
+	    $sdRisk: Risk(name == "Sleep deprivation")
+	then
+		RiskDTO risk = new RiskDTO($sdRisk.getName(), $sdRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Sleep for 18-64 age group sleep deprivation high risk"
+	when 
+		$userData: UserDataDTO(age >= 18, age <= 64, averageSleepTime < 360)
+	    $healthData: HealthDataDTO()
+	    $sdRisk: Risk(name == "Sleep deprivation")
+	then
+		RiskDTO risk = new RiskDTO($sdRisk.getName(), $sdRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+
+rule "Sleep for 65+ age group sleep deprivation high risk"
+	when 
+		$userData: UserDataDTO(age >= 65, averageSleepTime < 300)
+	    $healthData: HealthDataDTO()
+	    $sdRisk: Risk(name == "Sleep deprivation")
+	then
+		RiskDTO risk = new RiskDTO($sdRisk.getName(), $sdRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+// ***************************************************************************
+//						TOO MUCH SLEEP LOW RISK
+// ***************************************************************************
+
+rule "Sleep for 14-17 age group too much sleep low risk"
+	when 
+		$userData: UserDataDTO(age >= 14, age <= 17, averageSleepTime > 600, averageSleepTime < 660 )
+	    $healthData: HealthDataDTO()
+	    $tmsRisk: Risk(name == "Too much sleep")
+	then
+		RiskDTO risk = new RiskDTO($tmsRisk.getName(), $tmsRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Sleep for 18-25 age group too much sleep low risk"
+	when 
+		$userData: UserDataDTO(age >= 18, age <= 25, averageSleepTime > 540, averageSleepTime < 660)
+	    $healthData: HealthDataDTO()
+	    $tmsRisk: Risk(name == "Too much sleep")
+	then
+		RiskDTO risk = new RiskDTO($tmsRisk.getName(), $tmsRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Sleep for 26-64 age group too much sleep low risk"
+	when 
+		$userData: UserDataDTO(age >= 26, age <= 64, averageSleepTime > 540, averageSleepTime < 600)
+	    $healthData: HealthDataDTO()
+	    $tmsRisk: Risk(name == "Too much sleep")
+	then
+		RiskDTO risk = new RiskDTO($tmsRisk.getName(), $tmsRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+
+rule "Sleep for 65+ age group too much sleep low risk"
+	when 
+		$userData: UserDataDTO(age >= 65, averageSleepTime > 480, averageSleepTime < 540)
+	    $healthData: HealthDataDTO()
+	    $tmsRisk: Risk(name == "Too much sleep")
+	then
+		RiskDTO risk = new RiskDTO($tmsRisk.getName(), $tmsRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+// ***************************************************************************
+//						TOO MUCH SLEEP HIGH RISK
+// ***************************************************************************
+
+rule "Sleep for 14-25 age group too much sleep high risk"
+	when 
+		$userData: UserDataDTO(age >= 14, age <= 25, averageSleepTime > 660)
+	    $healthData: HealthDataDTO()
+	    $tmsRisk: Risk(name == "Too much sleep")
+	then
+		RiskDTO risk = new RiskDTO($tmsRisk.getName(), $tmsRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Sleep for 26-64 age group too much sleep high risk"
+	when 
+		$userData: UserDataDTO(age >= 26, age <= 64, averageSleepTime > 600)
+	    $healthData: HealthDataDTO()
+	    $tmsRisk: Risk(name == "Too much sleep")
+	then
+		RiskDTO risk = new RiskDTO($tmsRisk.getName(), $tmsRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+
+rule "Sleep for 65+ age group too much sleep high risk"
+	when 
+		$userData: UserDataDTO(age >= 65, averageSleepTime > 540)
+	    $healthData: HealthDataDTO()
+	    $tmsRisk: Risk(name == "Too much sleep")
+	then
+		RiskDTO risk = new RiskDTO($tmsRisk.getName(), $tmsRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
