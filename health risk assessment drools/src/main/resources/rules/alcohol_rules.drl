@@ -1,0 +1,54 @@
+package com.sample
+
+import com.healthriskassessment.dto.AlcoholDTO;
+
+
+rule "Drinking high risk for men"
+	when 
+		$userData: UserDataDTO( gender == Gender.MALE, $alcohol: alcohol )
+		AlcoholDTO(drinksPerOccasion > 5 || drinksPerWeek > 15) from $alcohol
+	    $healthData: HealthDataDTO()
+	    $drinkingRisk: Risk(name == "Drinking")
+	then
+		RiskDTO risk = new RiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Drinking high risk for women"
+	when 
+		$userData: UserDataDTO( gender == Gender.FEMALE, $alcohol: alcohol )
+		AlcoholDTO(drinksPerOccasion > 4 || drinksPerWeek > 8) from $alcohol
+	    $healthData: HealthDataDTO()
+	    $drinkingRisk: Risk(name == "Drinking")
+	then
+		RiskDTO risk = new RiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Drinking low risk for men"
+	when 
+		$userData: UserDataDTO( gender == Gender.MALE, $alcohol: alcohol )
+		AlcoholDTO((drinksPerOccasion != 0 && drinksPerOccasion < 5) || 
+		( drinksPerWeek != 0 && drinksPerWeek < 15)) from $alcohol
+	    $healthData: HealthDataDTO()
+	    $drinkingRisk: Risk(name == "Drinking")
+	then
+		RiskDTO risk = new RiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Drinking low risk for women"
+	when 
+		$userData: UserDataDTO( gender == Gender.FEMALE, $alcohol: alcohol )
+		AlcoholDTO((drinksPerOccasion != 0 && drinksPerOccasion < 4) || 
+		( drinksPerWeek != 0 && drinksPerWeek < 8)) from $alcohol
+	    $healthData: HealthDataDTO()
+	    $drinkingRisk: Risk(name == "Drinking")
+	then
+		RiskDTO risk = new RiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end

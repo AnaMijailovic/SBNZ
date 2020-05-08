@@ -1,0 +1,12 @@
+package com.sample
+
+rule "Low physical activity risk"
+	when 
+		$userData: UserDataDTO(activityLevel == ActivityLevel.SEDENTARY)
+	    $healthData: HealthDataDTO()
+	    $lpaRisk: Risk(name == "Low physical activity")
+	then
+		RiskDTO risk = new RiskDTO($lpaRisk.getName(), $lpaRisk.getDescription(),
+		null);
+		$healthData.getRisks().add(risk);
+end

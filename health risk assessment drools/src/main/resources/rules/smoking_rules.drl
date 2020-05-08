@@ -1,0 +1,31 @@
+package com.sample
+ 
+import com.healthriskassessment.dto.UserDataDTO;
+import com.healthriskassessment.dto.SmokerDTO;
+import com.healthriskassessment.dto.HealthDataDTO;
+import com.healthriskassessment.model.enums.Gender;
+
+
+rule "Smoking high risk"
+	when 
+		$userData: UserDataDTO($s: smoker)
+		SmokerDTO(cigaretsPerDay >= 20) from $s
+	    $healthData: HealthDataDTO()
+	    $smokingRisk: Risk(name == "Smoking")
+	then
+		RiskDTO risk = new RiskDTO($smokingRisk.getName(), $smokingRisk.getDescription(),
+		RiskLevel.HIGH);
+		$healthData.getRisks().add(risk);
+end
+
+rule "Smoking low risk"
+	when 
+		$userData: UserDataDTO($s: smoker)
+		SmokerDTO(cigaretsPerDay != 0, cigaretsPerDay < 20) from $s
+	    $healthData: HealthDataDTO()
+	    $smokingRisk: Risk(name == "Smoking")
+	then
+		RiskDTO risk = new RiskDTO($smokingRisk.getName(), $smokingRisk.getDescription(),
+		RiskLevel.LOW);
+		$healthData.getRisks().add(risk);
+end
