@@ -13,16 +13,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Risk {
+public class User {
 	
 	@Id
 	@GeneratedValue
 	private Long id;
 	
 	@Column(unique=true, nullable=false)
-	private String name;
+	private String username;
 	
 	@Column(nullable=false)
-	private String description;
+	private String password;
+	
+	@Column(nullable=false)
+	private String firstName;
+	
+	@Column(nullable=false)
+	private String lastName;
+	
+	@Column(unique=true, nullable=false)
+	private String email;
+	
 
 }

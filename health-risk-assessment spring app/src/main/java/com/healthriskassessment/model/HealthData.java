@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.healthriskassessment.model.enums.BMICategory;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,19 +19,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Desease {
+public class HealthData {
 	
 	@Id
 	@GeneratedValue
 	private Long id;
 	
-	@Column(unique=true, nullable=false)
-	private String name;
+	private float bmiValue;
+	private BMICategory bmiCategory;
+	private float bmrValue;
+	private float tdeeValue;
+	private float kgTillNormal;
+	private int averageSleepLowerLimit;
+	private int averageSleepHigherLimit;
 	
-	@Column(nullable=false)
-	private String description;
-	
+	@OneToMany
+	private Set<UserRisk> risks;
 	@ManyToMany
-	private Set<Risk> risks;
+	private Set<Desease> deseases;
 
 }

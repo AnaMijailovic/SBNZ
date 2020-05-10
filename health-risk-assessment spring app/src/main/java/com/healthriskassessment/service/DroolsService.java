@@ -10,6 +10,7 @@ import com.healthriskassessment.dto.HealthDataDTO;
 import com.healthriskassessment.dto.UserDataDTO;
 import com.healthriskassessment.model.enums.ActivityLevel;
 import com.healthriskassessment.model.enums.Gender;
+import com.healthriskassessment.repository.DeseaseRepository;
 import com.healthriskassessment.repository.RiskRepository;
 
 @Service
@@ -19,6 +20,9 @@ public class DroolsService {
 
 	@Autowired
 	private RiskRepository riskRepository;
+	
+	@Autowired
+	private DeseaseRepository deseaseRepository;
 
 	@Autowired
 	public DroolsService(KieSession kieSession) {
@@ -51,12 +55,15 @@ public class DroolsService {
 
 		kieSession.insert(dto);
 		riskRepository.findAll().forEach(x -> kieSession.insert(x));
+		deseaseRepository.findAll().forEach(x -> kieSession.insert(x));
 		HealthDataDTO hd = new HealthDataDTO();
 		hd.setRisks(new ArrayList<>());
 		hd.setDeseases(new ArrayList<>());
 		kieSession.insert(hd);
 
 		System.out.println("Fire all: " + kieSession.fireAllRules());
+		kieSession.getAgenda().getAgendaGroup("deseases").setFocus();
+	    System.out.println(kieSession.fireAllRules());
 		kieSession.dispose();
 		return hd;
 	}

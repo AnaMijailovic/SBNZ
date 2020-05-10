@@ -1,0 +1,30 @@
+package com.sample
+
+import com.healthriskassessment.model.Desease;
+import com.healthriskassessment.dto.RiskDTO;
+import java.util.List;
+import java.util.Set;
+
+
+rule "Find deseases"
+	agenda-group "deseases"
+    when
+        $desease: Desease($deseaseRisks: risks, $deseaseName: name)
+        $healthData: HealthDataDTO($userRisks: risks)
+        $userRiskNames: List() from accumulate (
+            RiskDTO($name: riskName) from $userRisks, collectList($name)
+        )
+        checkForDeseaseRisks($deseaseRisks, $userRiskNames;)
+    then
+        $healthData.getDeseases().add($deseaseName);
+end
+
+
+query checkForDeseaseRisks(Set deseaseRisks, List userRiskNames)
+    $num : Number(intValue >= 2) from accumulate(
+        RiskDTO($name: riskName, riskName memberOf userRiskNames) from deseaseRisks,
+        init(int count = 0;),
+        action(count += 1;),
+        result(count)
+    )
+end

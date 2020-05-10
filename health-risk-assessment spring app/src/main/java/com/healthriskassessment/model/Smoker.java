@@ -1,6 +1,5 @@
 package com.healthriskassessment.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,16 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Risk {
+public class Smoker {
 	
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column(unique=true, nullable=false)
-	private String name;
-	
-	@Column(nullable=false)
-	private String description;
+	private boolean isSmoker;
+	private boolean exSmoker;
+	private int cigaretsPerDay;
 
 }
