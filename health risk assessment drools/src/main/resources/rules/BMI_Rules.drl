@@ -7,6 +7,8 @@ import com.healthriskassessment.model.Risk;
 import com.healthriskassessment.model.enums.BMICategory;
 import com.healthriskassessment.model.enums.RiskLevel;
 
+// TODO Zameniti sa templejtima ...
+
 rule "Calculate BMI"
 	agenda-group "risks"
 	when 
@@ -115,5 +117,30 @@ rule "BMI category obese class III"
 		RiskDTO risk = new RiskDTO($obesityRisk.getName(), $obesityRisk.getDescription(),
 		RiskLevel.HIGH);
 		$healthData.getRisks().add(risk);
+end
+
+rule "How much to lose to be in normal BMI category"
+	agenda-group "risks"
+	when
+		$userData: UserDataDTO($weight: weight, $height: height)
+		$healthData: HealthDataDTO(bmiCategory == BMICategory.OBESE_CLASS_III ||
+		bmiCategory == BMICategory.OBESE_CLASS_II ||
+		bmiCategory == BMICategory.OBESE_CLASS_I ||
+		bmiCategory == BMICategory.OVERWEIGHT)  @Watch(bmiCategory)
+	then
+		float normalWeight = 0.0025f * $height * $height; 
+		modify($healthData) {setKgTillNormal(normalWeight - $weight);}
+end
+
+rule "How much to gain to be in normal BMI category"
+	agenda-group "risks"
+	when
+		$userData: UserDataDTO($weight: weight, $height: height)
+		$healthData: HealthDataDTO(bmiCategory == BMICategory.SEVERE_THINNESS ||
+		bmiCategory == BMICategory.MODERATE_THINNESS ||
+		bmiCategory == BMICategory.MILD_THINNESS)  @Watch(bmiCategory)
+	then
+		float normalWeight = 0.00185f * $height * $height;
+		modify($healthData) {setKgTillNormal(normalWeight - $weight);}
 end
  

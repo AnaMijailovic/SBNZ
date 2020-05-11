@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 /*
-TODO 1. Srediti pravila - nasledjivanje gde moze
-	 2. Dodati pravilo za MEDIUM desease risk
-	 3. Ispraviti pravila da se poklapaju sa specifikacijom
+TODO 1. Srediti pravila - nasledjivanje gde moze - DONE :)
+	 2. Dodati pravilo za MEDIUM desease risk - DONE :)
+	 3. Ispraviti pravila da se poklapaju sa specifikacijom - DONE :)
 	 4. Prioritet ne moze sa activation-group i salience da se sredi posto se pokrece isto pravilo
-	 	za vise bolesti, srediti sve preko constraints
+	 	za vise bolesti, srediti sve preko constraints - DONE :)
 	 5. Jednostavniji, bolji model?
 */
 
@@ -42,19 +42,59 @@ end
 //						DESEASE AT RISK CLASSIFICATION
 // **************************************************************************
 
-rule "Desease at risk classification high risk"
+rule "Desease classification"
 	agenda-group "deseases"
+	enabled false
 	when
-		$healthData: HealthDataDTO($deseases: deseases) @Watch(deseases)
+		$healthData: HealthDataDTO($deseases: deseases, $ds: deseases.size) @Watch(deseases)
 		$deseaseAtRisk: DeseaseDTO(riskLevel == null, $deseaseName: deseaseName,
 			$userDeseaseRisks: risks ) from $deseases // rizici prisutni kod user-a
 		$desease: Desease(name == $deseaseName, $allDeseaseRisks: risks) // svi rizici za bolest
-		
+	then
+end
+
+rule "Desease at risk classification high risk" extends "Desease classification"
+	agenda-group "deseases"
+	when
 		checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)
 	then
 	    System.out.println("\nDesease at risk classification high risk fired for: " + $deseaseName);
 	    $deseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
-		modify($healthData) { }
+		//modify($healthData) { }
+end
+
+rule "Desease at risk classification high risk 2" extends "Desease classification"
+	agenda-group "deseases"
+	when
+		checkNumberOfHighRisks($userDeseaseRisks, 1;)
+	then
+	    System.out.println("\nDesease at risk classification high risk 2 fired for: " + $deseaseName);
+		$deseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
+		//modify($healthData) { }
+end
+
+rule "Desease at risk classification medium risk " extends "Desease classification"
+	agenda-group "deseases"
+	when	
+        Number(intValue > 3) from $ds
+        not checkNumberOfHighRisks($userDeseaseRisks, 1;)
+		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)     
+	then
+	    System.out.println("\nDesease at risk classification medium risk fired for: " + $deseaseName);
+		$deseaseAtRisk.setRiskLevel(RiskLevel.MEDIUM);
+		//modify($healthData) { }
+end
+
+rule "Desease at risk classification low risk " extends "Desease classification"
+	agenda-group "deseases"
+	when	
+        Number(intValue == 2 || intValue == 3) from $ds
+        not checkNumberOfHighRisks($userDeseaseRisks, 1;)
+		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)     
+	then
+	    System.out.println("\nDesease at risk classification low risk fired for: " + $deseaseName);
+		$deseaseAtRisk.setRiskLevel(RiskLevel.LOW);
+		//modify($healthData) { }
 end
 
 query checkNumberOfRisks(Set deseaseRisks, Set userRisks)
@@ -71,58 +111,21 @@ query checkNumberOfRisks(Set deseaseRisks, Set userRisks)
     )
 end
 
-rule "Desease at risk classification high risk 2"
-	agenda-group "deseases"
-	when
-		$healthData: HealthDataDTO( $deseases: deseases) @Watch(deseases)
-		$deseaseAtRisk: DeseaseDTO(riskLevel == null, $deseaseName: deseaseName, risks.size() > 2,
-			$userDeseaseRisks: risks ) from $deseases 
-		
-		$highRisks: Number(intValue >= 2) from accumulate(
-			RiskDTO(riskLevel == RiskLevel.HIGH) from $userDeseaseRisks,
-        		init(int count = 0;),
-        		action(count += 1;),
-        		result(count)		
-        )
-	then
-	    System.out.println("\nDesease at risk classification high risk 2 fired for: " + $deseaseName);
-		$deseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
-		modify($healthData) { }
-end
+query checkNumberOfHighRisks(Set userRisks, int lowerLimit)
 
-rule "Desease at risk classification low risk "
-	agenda-group "deseases"
-	when
-		$healthData: HealthDataDTO($deseases: deseases) @Watch(deseases)
-		$deseaseAtRisk: DeseaseDTO(riskLevel == null, $deseaseName: deseaseName, $userDeseaseRisks: risks) from $deseases 
-		$desease: Desease(name == $deseaseName, $allDeseaseRisks: risks) // svi rizici za bolest
-		
-		$highRisks: Number(intValue < 4) from accumulate(
-			RiskDTO() from $userDeseaseRisks,
+ 		$highRisks: Number(intValue > lowerLimit) from accumulate(
+			RiskDTO(riskLevel == RiskLevel.HIGH) from userRisks,
         		init(int count = 0;),
         		action(count += 1;),
         		result(count)		
         )
-        
-        $highRisks2: Number(intValue < 2) from accumulate(
-			RiskDTO(riskLevel == RiskLevel.HIGH) from $userDeseaseRisks,
-        		init(int count = 0;),
-        		action(count += 1;),
-        		result(count)		
-        )
-	
-		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)
-        
-	then
-	    System.out.println("\nDesease at risk classification low risk fired for: " + $deseaseName);
-		$deseaseAtRisk.setRiskLevel(RiskLevel.LOW);
-		modify($healthData) { }
 end
 
 rule "Test rule"
 	agenda-group "desease classification"
 	when
-		$healthData: HealthDataDTO()
+		$healthData: HealthDataDTO($ds: deseases.size)
+		Number(intValue > 0) from $ds
 	then
-	    System.out.println("\nTest rule fired");
+	    System.out.println("\nTest rule fired " + $ds);
 end
