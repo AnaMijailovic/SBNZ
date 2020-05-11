@@ -60,9 +60,15 @@ public class DroolsService {
 		hd.setRisks(new ArrayList<>());
 		hd.setDeseases(new ArrayList<>());
 		kieSession.insert(hd);
-
+		
+		kieSession.getAgenda().getAgendaGroup("risks").setFocus();
 		System.out.println("Fire all: " + kieSession.fireAllRules());
+		System.out.println("Facts num: " + kieSession.getFactCount());
 		kieSession.getAgenda().getAgendaGroup("deseases").setFocus();
+	    System.out.println(kieSession.fireAllRules());
+	    System.out.println("Facts num: " + kieSession.getFactCount());
+	    
+	    kieSession.getAgenda().getAgendaGroup("desease classification").setFocus();
 	    System.out.println(kieSession.fireAllRules());
 		kieSession.dispose();
 		return hd;

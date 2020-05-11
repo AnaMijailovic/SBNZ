@@ -2,6 +2,8 @@ package com.healthriskassessment.dto;
 
 import java.util.List;
 
+import org.kie.api.definition.type.PropertyReactive;
+
 import com.healthriskassessment.model.enums.BMICategory;
 
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@PropertyReactive
 public class HealthDataDTO {
 	
 	private float bmiValue;
@@ -21,7 +24,6 @@ public class HealthDataDTO {
 	private int averageSleepLowerLimit;
 	private int averageSleepHigherLimit;
 	private List<RiskDTO> risks;
-	private List<String> deseases;
+	private List<DeseaseDTO> deseases;
 	
-
 }

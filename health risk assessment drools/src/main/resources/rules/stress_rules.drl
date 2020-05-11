@@ -8,6 +8,7 @@ import com.healthriskassessment.model.enums.BMICategory;
 import com.healthriskassessment.model.enums.RiskLevel;
 
 rule "Stress level low risk"
+	agenda-group "risks"
 	when
 		$userData: UserDataDTO(stressLevel >= 4, stressLevel <= 5 )
 		$healthData: HealthDataDTO()
@@ -19,6 +20,7 @@ rule "Stress level low risk"
 end
 
 rule "Stress level medium risk"
+	agenda-group "risks"
 	when
 		$userData: UserDataDTO(stressLevel >= 6, stressLevel <= 7 )
 		$healthData: HealthDataDTO()
@@ -30,6 +32,7 @@ rule "Stress level medium risk"
 end
 
 rule "Stress level high risk"
+	agenda-group "risks"
 	when
 		$userData: UserDataDTO(stressLevel >= 8 )
 		$healthData: HealthDataDTO()

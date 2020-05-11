@@ -8,6 +8,7 @@ import com.healthriskassessment.model.enums.BMICategory;
 import com.healthriskassessment.model.enums.RiskLevel;
 
 rule "Calculate BMI"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO($weight: weight, $height: height)
 	    $healthData: HealthDataDTO()
@@ -18,6 +19,7 @@ end
 
 
 rule "BMI category severe thinness"
+	agenda-group "risks"
 	when
 		$healthData: HealthDataDTO(bmiValue < 16, bmiValue != 0)
 		$underweightRisk: Risk(name == "Underweight")
@@ -30,6 +32,7 @@ end
 
 
 rule "BMI category moderate thinness"
+	agenda-group "risks"
 	when
 		$healthData: HealthDataDTO(bmiValue >= 16, bmiValue < 17  )
 		$underweightRisk: Risk(name == "Underweight")
@@ -42,6 +45,7 @@ end
 
 
 rule "BMI category mild thinness"
+	agenda-group "risks"
 	when
 		$healthData: HealthDataDTO(17 <= bmiValue, bmiValue < 18.5 )
 		$underweightRisk: Risk(name == "Underweight")
@@ -54,6 +58,7 @@ end
 
 
 rule "BMI category normal"
+	agenda-group "risks"
 	when
 		$healthData: HealthDataDTO(18.5 <= bmiValue, bmiValue < 25 )
 	then
@@ -62,6 +67,7 @@ end
 
 
 rule "BMI category overweight"
+	agenda-group "risks"
 	when
 		$healthData: HealthDataDTO(25 <= bmiValue, bmiValue < 30 )
 		$obesityRisk: Risk(name == "Obesity")
@@ -74,6 +80,7 @@ end
 
 
 rule "BMI category obese class I"
+	agenda-group "risks"
 	when
 		$healthData: HealthDataDTO(30 <= bmiValue, bmiValue < 35 )
 		$obesityRisk: Risk(name == "Obesity")
@@ -86,6 +93,7 @@ end
 
 
 rule "BMI category obese class II"
+	agenda-group "risks"
 	when
 		$healthData: HealthDataDTO(35 <= bmiValue, bmiValue < 40 )
 		$obesityRisk: Risk(name == "Obesity")
@@ -98,6 +106,7 @@ end
 
 
 rule "BMI category obese class III"
+	agenda-group "risks"
 	when
 		$healthData: HealthDataDTO(bmiValue > 40 )
 		$obesityRisk: Risk(name == "Obesity")

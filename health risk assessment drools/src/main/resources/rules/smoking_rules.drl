@@ -7,6 +7,7 @@ import com.healthriskassessment.model.enums.Gender;
 
 
 rule "Smoking high risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO($s: smoker)
 		SmokerDTO(cigaretsPerDay >= 20) from $s
@@ -19,6 +20,7 @@ rule "Smoking high risk"
 end
 
 rule "Smoking low risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO($s: smoker)
 		SmokerDTO(cigaretsPerDay != 0, cigaretsPerDay < 20) from $s

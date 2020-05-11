@@ -19,6 +19,7 @@ import com.healthriskassessment.model.enums.ActivityLevel;
 // ***************************************************************************
 
 rule "Sleep for 14-17 age group"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age > 14, age <= 17)
 	    $healthData: HealthDataDTO()
@@ -28,6 +29,7 @@ rule "Sleep for 14-17 age group"
 end
 
 rule "Sleep for 18-64 age group"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 18, age <= 64)
 	    $healthData: HealthDataDTO()
@@ -37,6 +39,7 @@ rule "Sleep for 18-64 age group"
 end
 
 rule "Sleep for 65+ age group"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 65)
 	    $healthData: HealthDataDTO()
@@ -50,6 +53,7 @@ end
 // ***************************************************************************
 
 rule "Sleep for 14-17 age group sleep deprivation low risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 14, age <= 17, averageSleepTime > 420, averageSleepTime < 480)
 	    $healthData: HealthDataDTO()
@@ -61,6 +65,7 @@ rule "Sleep for 14-17 age group sleep deprivation low risk"
 end
 
 rule "Sleep for 18-64 age group sleep deprivation low risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 18, age <= 64, averageSleepTime > 360, averageSleepTime < 420)
 	    $healthData: HealthDataDTO()
@@ -73,6 +78,7 @@ end
 
 
 rule "Sleep for 65+ age group sleep deprivation low risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 65, averageSleepTime > 300, averageSleepTime < 420)
 	    $healthData: HealthDataDTO()
@@ -88,6 +94,7 @@ end
 // ***************************************************************************
 
 rule "Sleep for 14-17 age group sleep deprivation high risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 14, age <= 17, averageSleepTime < 420)
 	    $healthData: HealthDataDTO()
@@ -99,6 +106,7 @@ rule "Sleep for 14-17 age group sleep deprivation high risk"
 end
 
 rule "Sleep for 18-64 age group sleep deprivation high risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 18, age <= 64, averageSleepTime < 360)
 	    $healthData: HealthDataDTO()
@@ -111,6 +119,7 @@ end
 
 
 rule "Sleep for 65+ age group sleep deprivation high risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 65, averageSleepTime < 300)
 	    $healthData: HealthDataDTO()
@@ -126,6 +135,7 @@ end
 // ***************************************************************************
 
 rule "Sleep for 14-17 age group too much sleep low risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 14, age <= 17, averageSleepTime > 600, averageSleepTime < 660 )
 	    $healthData: HealthDataDTO()
@@ -137,6 +147,7 @@ rule "Sleep for 14-17 age group too much sleep low risk"
 end
 
 rule "Sleep for 18-25 age group too much sleep low risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 18, age <= 25, averageSleepTime > 540, averageSleepTime < 660)
 	    $healthData: HealthDataDTO()
@@ -148,6 +159,7 @@ rule "Sleep for 18-25 age group too much sleep low risk"
 end
 
 rule "Sleep for 26-64 age group too much sleep low risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 26, age <= 64, averageSleepTime > 540, averageSleepTime < 600)
 	    $healthData: HealthDataDTO()
@@ -160,6 +172,7 @@ end
 
 
 rule "Sleep for 65+ age group too much sleep low risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 65, averageSleepTime > 480, averageSleepTime < 540)
 	    $healthData: HealthDataDTO()
@@ -175,6 +188,7 @@ end
 // ***************************************************************************
 
 rule "Sleep for 14-25 age group too much sleep high risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 14, age <= 25, averageSleepTime > 660)
 	    $healthData: HealthDataDTO()
@@ -186,6 +200,7 @@ rule "Sleep for 14-25 age group too much sleep high risk"
 end
 
 rule "Sleep for 26-64 age group too much sleep high risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 26, age <= 64, averageSleepTime > 600)
 	    $healthData: HealthDataDTO()
@@ -198,6 +213,7 @@ end
 
 
 rule "Sleep for 65+ age group too much sleep high risk"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO(age >= 65, averageSleepTime > 540)
 	    $healthData: HealthDataDTO()

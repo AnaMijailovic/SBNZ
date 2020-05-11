@@ -4,6 +4,7 @@ import com.healthriskassessment.dto.AlcoholDTO;
 
 
 rule "Drinking high risk for men"
+ 	agenda-group "risks"
 	when 
 		$userData: UserDataDTO( gender == Gender.MALE, $alcohol: alcohol )
 		AlcoholDTO(drinksPerOccasion > 5 || drinksPerWeek > 15) from $alcohol
@@ -16,6 +17,7 @@ rule "Drinking high risk for men"
 end
 
 rule "Drinking high risk for women"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO( gender == Gender.FEMALE, $alcohol: alcohol )
 		AlcoholDTO(drinksPerOccasion > 4 || drinksPerWeek > 8) from $alcohol
@@ -28,6 +30,7 @@ rule "Drinking high risk for women"
 end
 
 rule "Drinking low risk for men"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO( gender == Gender.MALE, $alcohol: alcohol )
 		AlcoholDTO((drinksPerOccasion != 0 && drinksPerOccasion < 5) || 
@@ -41,6 +44,7 @@ rule "Drinking low risk for men"
 end
 
 rule "Drinking low risk for women"
+	agenda-group "risks"
 	when 
 		$userData: UserDataDTO( gender == Gender.FEMALE, $alcohol: alcohol )
 		AlcoholDTO((drinksPerOccasion != 0 && drinksPerOccasion < 4) || 
