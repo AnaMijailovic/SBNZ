@@ -11,7 +11,7 @@ rule "Drinking high risk for men"
 	    $healthData: HealthDataDTO()
 	    $drinkingRisk: Risk(name == "Drinking")
 	then
-		RiskDTO risk = new RiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
+		UserRiskDTO risk = new UserRiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
 		RiskLevel.HIGH);
 		$healthData.getRisks().add(risk);
 end
@@ -24,7 +24,7 @@ rule "Drinking high risk for women"
 	    $healthData: HealthDataDTO()
 	    $drinkingRisk: Risk(name == "Drinking")
 	then
-		RiskDTO risk = new RiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
+		UserRiskDTO risk = new UserRiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
 		RiskLevel.HIGH);
 		$healthData.getRisks().add(risk);
 end
@@ -38,7 +38,7 @@ rule "Drinking low risk for men"
 	    $healthData: HealthDataDTO()
 	    $drinkingRisk: Risk(name == "Drinking")
 	then
-		RiskDTO risk = new RiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
+		UserRiskDTO risk = new UserRiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
 		RiskLevel.LOW);
 		$healthData.getRisks().add(risk);
 end
@@ -52,7 +52,7 @@ rule "Drinking low risk for women"
 	    $healthData: HealthDataDTO()
 	    $drinkingRisk: Risk(name == "Drinking")
 	then
-		RiskDTO risk = new RiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
+		UserRiskDTO risk = new UserRiskDTO($drinkingRisk.getName(), $drinkingRisk.getDescription(),
 		RiskLevel.LOW);
 		$healthData.getRisks().add(risk);
 end

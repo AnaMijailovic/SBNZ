@@ -23,7 +23,7 @@ public class HealthDataDTO {
 	private float kgTillNormal;
 	private int averageSleepLowerLimit;
 	private int averageSleepHigherLimit;
-	private List<RiskDTO> risks;
-	private List<DeseaseDTO> deseases;
+	private List<UserRiskDTO> risks;
+	private List<UserDeseaseDTO> deseases;
 	
 }

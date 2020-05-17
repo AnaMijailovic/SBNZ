@@ -1,8 +1,8 @@
 package com.sample
 
 import com.healthriskassessment.model.Desease;
-import com.healthriskassessment.dto.RiskDTO;
-import com.healthriskassessment.dto.DeseaseDTO;
+import com.healthriskassessment.dto.UserRiskDTO;
+import com.healthriskassessment.dto.UserDeseaseDTO;
 import java.util.List;
 import java.util.Set;
 
@@ -26,13 +26,13 @@ rule "Find deseases"
         checkForDeseaseRisks($num, $matchingRisks, $deseaseRiskNames, $userRisks;)
     then
     	System.out.println("\nFind deseases fired for desease: " + $deseaseName);
-    	DeseaseDTO deseaseDto = new DeseaseDTO($deseaseName, $deseaseDescription, null, $matchingRisks);
-        $healthData.getDeseases().add(deseaseDto);
+    	UserDeseaseDTO UserDeseaseDTO = new UserDeseaseDTO($deseaseName, $deseaseDescription, null, $matchingRisks);
+        $healthData.getDeseases().add(UserDeseaseDTO);
 end
 
 query checkForDeseaseRisks(Number $num, Set $matchingRisks,List deseaseRiskNames, List userRisks)
     $matchingRisks := Set(size > 0) from accumulate (
-     	RiskDTO($risk: this, $name: riskName, riskName memberOf deseaseRiskNames) from userRisks,
+     	UserRiskDTO($risk: this, $name: riskName, riskName memberOf deseaseRiskNames) from userRisks,
      	collectSet($risk)
     )
 
@@ -47,7 +47,7 @@ rule "Desease classification"
 	enabled false
 	when
 		$healthData: HealthDataDTO($deseases: deseases, $ds: deseases.size) @Watch(deseases)
-		$deseaseAtRisk: DeseaseDTO(riskLevel == null, $deseaseName: deseaseName,
+		$deseaseAtRisk: UserDeseaseDTO(riskLevel == null, $deseaseName: deseaseName,
 			$userDeseaseRisks: risks ) from $deseases // rizici prisutni kod user-a
 		$desease: Desease(name == $deseaseName, $allDeseaseRisks: risks) // svi rizici za bolest
 	then
@@ -97,6 +97,9 @@ rule "Desease at risk classification low risk " extends "Desease classification"
 		//modify($healthData) { }
 end
 
+// check if the user has all the risks that affect a disease / or one risk is missing
+// desesaseRisks - all risks that may affect this disease
+// userRisks - all risks that the user has and are related to this desease
 query checkNumberOfRisks(Set deseaseRisks, Set userRisks)
 
  	$deseaseRiskNames := List() from accumulate (
@@ -104,17 +107,19 @@ query checkNumberOfRisks(Set deseaseRisks, Set userRisks)
         )
  
     $num := Number(intValue >= $deseaseRiskNames.size() - 1 ) from accumulate(
-        RiskDTO($name: riskName, riskName memberOf $deseaseRiskNames) from userRisks,
+        UserRiskDTO($name: riskName, riskName memberOf $deseaseRiskNames) from userRisks,
         init(int count = 0;),
         action(count += 1;),
         result(count)
     )
 end
 
+// check the number of user risks for one desease marked as high risk
+// userRisks - all risks that the user has and are related to one desease
 query checkNumberOfHighRisks(Set userRisks, int lowerLimit)
 
  		$highRisks: Number(intValue > lowerLimit) from accumulate(
-			RiskDTO(riskLevel == RiskLevel.HIGH) from userRisks,
+			UserRiskDTO(riskLevel == RiskLevel.HIGH) from userRisks,
         		init(int count = 0;),
         		action(count += 1;),
         		result(count)		

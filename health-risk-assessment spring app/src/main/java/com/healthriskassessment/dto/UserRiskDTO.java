@@ -1,6 +1,5 @@
 package com.healthriskassessment.dto;
 
-import java.util.Set;
 
 import com.healthriskassessment.model.enums.RiskLevel;
 
@@ -11,11 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeseaseDTO {
+public class UserRiskDTO {
 	
-	private String deseaseName;
-	private String deseaseDescription;
+	private String riskName;
+	private String riskDescription;
 	private RiskLevel riskLevel;
-	private Set<RiskDTO> risks;
-
+	
 }

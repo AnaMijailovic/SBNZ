@@ -23,7 +23,11 @@ public class UserDataDTO {
 	private int stressLevel;
 	private SmokerDTO smoker;
 	private AlcoholDTO alcohol;
+	
+	// diseases that have already been diagnosed to this user
 	private List<String> familyHistory;
+	
+	// diseases from which any of the family members suffers/suffered
 	private List<String> diagnosedDeseases;
 
 }

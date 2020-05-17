@@ -21,8 +21,11 @@ public class UserRisk {
 	@GeneratedValue
 	private Long id;
 	
+	// the risk that this user has
 	@ManyToOne()
 	private Risk risk;
+	
+	// the estimated level of risk of this risk/symptom
 	private RiskLevel riskLevel;
 
 }
