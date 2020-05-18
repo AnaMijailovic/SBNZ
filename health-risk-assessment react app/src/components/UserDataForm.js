@@ -48,7 +48,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function UserDataForm() {
+
+
+export default function UserDataForm({ healthData }) {
     const classes = useStyles();
     const [age, setAge] = React.useState();
     const [height, setHeight] = React.useState();
@@ -139,11 +141,12 @@ export default function UserDataForm() {
                         "drinksPerOccasion": drinksPerOccasion,
                         "drinksPerWeek": drinksPerWeek}
         }
-        alert(JSON.stringify(postData));
+       // alert(JSON.stringify(postData));
 
         axios.post('http://localhost:8081/hra', postData)
             .then((response) => {
-                console.log(response);
+                console.log('Response: ' + JSON.stringify(response));
+                healthData(response);
             }, (error) => {
                 console.log('Error: ' + error);
             });
