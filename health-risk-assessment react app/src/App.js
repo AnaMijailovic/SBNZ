@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
-import Navbar from './components/Navbar';
-import UserDataForm from './components/UserDataForm';
+import Navbar from './components/navbar/Navbar';
+import UserDataForm from './components/user-data-form/UserDataForm';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     color: 'gray',
     display: 'flex',
-    marginTop: '-30.3%'
+    marginTop: '-33.3%'
     /* border: 'solid black'*/
   },
   table: {
@@ -45,10 +45,17 @@ function App() {
     setRecommendedSleepFrom(event.data.averageSleepLowerLimit);
     setRecommendedSleepTo(event.data.averageSleepHigherLimit);
     setKgTillNormal(event.data.kgTillNormal);
-    let s = ""
+    let s = "";
+    let risk = "";
     for (let i = 0; i < event.data.deseases.length; i++ ) {
+      if (event.data.deseases[i].riskLevel == null){
+        risk = 'low';
+      }else {
+        risk = event.data.deseases[i].riskLevel.toLowerCase();
+      }
+
       s +=  '<p>' + event.data.deseases[i].deseaseName + ' -  '
-       + event.data.deseases[i].riskLevel.toLowerCase() +' risk </p>';
+       + risk +' risk </p>';
     }
     document.getElementById("change").innerHTML = s;
   };
@@ -60,6 +67,7 @@ function App() {
 
       <form className={classes.root} noValidate autoComplete="off">
         <table className={classes.table} align="center">
+          <tbody>
           <tr>
             <td><TextField disabled value={bmiValue} label="BMI value" /> </td>
 
@@ -72,26 +80,26 @@ function App() {
             </td>
           </tr>
           <tr>
-            <td><TextField disabled value={bmrValue} label="BMR value" /></td>
+            <td><TextField disabled value={bmrValue} label="BMR value (kcal/day)" /></td>
           </tr>
           <tr>
-            <td><TextField disabled value={tdeeValue} label="TDEE value" /></td>
+            <td><TextField disabled value={tdeeValue} label="TDEE value (kcal/day)" /></td>
 
           </tr>
           <tr>
             <td><TextField disabled value={kgTillNormal} label="Kg till normal" /></td>
           </tr>
           <tr>
-            <td><TextField disabled value={recommendedSleepFrom} label="Sleep from (min)" /></td>
+            <td><TextField disabled value={recommendedSleepFrom} label="Sleep from (h)" /></td>
           </tr>
 
           <tr>
-            <td><TextField disabled value={recommendedSleepTo} label="Sleep to (min)" /></td>
+            <td><TextField disabled value={recommendedSleepTo} label="Sleep to (h)" /></td>
           </tr>
           <tr>
             <td>&nbsp;</td>
           </tr>
-       
+        </tbody>
         </table>
       </form>
 

@@ -6,14 +6,6 @@ import com.healthriskassessment.dto.UserDeseaseDTO;
 import java.util.List;
 import java.util.Set;
 
-/*
-TODO 1. Srediti pravila - nasledjivanje gde moze - DONE :)
-	 2. Dodati pravilo za MEDIUM desease risk - DONE :)
-	 3. Ispraviti pravila da se poklapaju sa specifikacijom - DONE :)
-	 4. Prioritet ne moze sa activation-group i salience da se sredi posto se pokrece isto pravilo
-	 	za vise bolesti, srediti sve preko constraints - DONE :)
-	 5. Jednostavniji, bolji model?
-*/
 
 rule "Find deseases"
 	agenda-group "deseases"
@@ -48,8 +40,8 @@ rule "Desease classification"
 	when
 		$healthData: HealthDataDTO($deseases: deseases, $ds: deseases.size) @Watch(deseases)
 		$deseaseAtRisk: UserDeseaseDTO(riskLevel == null, $deseaseName: deseaseName,
-			$userDeseaseRisks: risks ) from $deseases // rizici prisutni kod user-a
-		$desease: Desease(name == $deseaseName, $allDeseaseRisks: risks) // svi rizici za bolest
+			$userDeseaseRisks: risks ) from $deseases // all risks that the user has
+		$desease: Desease(name == $deseaseName, $allDeseaseRisks: risks) // all risks that may affect this disease
 	then
 end
 
@@ -60,40 +52,6 @@ rule "Desease at risk classification high risk" extends "Desease classification"
 	then
 	    System.out.println("\nDesease at risk classification high risk fired for: " + $deseaseName);
 	    $deseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
-		//modify($healthData) { }
-end
-
-rule "Desease at risk classification high risk 2" extends "Desease classification"
-	agenda-group "deseases"
-	when
-		checkNumberOfHighRisks($userDeseaseRisks, 1;)
-	then
-	    System.out.println("\nDesease at risk classification high risk 2 fired for: " + $deseaseName);
-		$deseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
-		//modify($healthData) { }
-end
-
-rule "Desease at risk classification medium risk " extends "Desease classification"
-	agenda-group "deseases"
-	when	
-        Number(intValue > 3) from $ds
-        not checkNumberOfHighRisks($userDeseaseRisks, 1;)
-		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)     
-	then
-	    System.out.println("\nDesease at risk classification medium risk fired for: " + $deseaseName);
-		$deseaseAtRisk.setRiskLevel(RiskLevel.MEDIUM);
-		//modify($healthData) { }
-end
-
-rule "Desease at risk classification low risk " extends "Desease classification"
-	agenda-group "deseases"
-	when	
-        Number(intValue == 2 || intValue == 3) from $ds
-        not checkNumberOfHighRisks($userDeseaseRisks, 1;)
-		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)     
-	then
-	    System.out.println("\nDesease at risk classification low risk fired for: " + $deseaseName);
-		$deseaseAtRisk.setRiskLevel(RiskLevel.LOW);
 		//modify($healthData) { }
 end
 
@@ -114,6 +72,16 @@ query checkNumberOfRisks(Set deseaseRisks, Set userRisks)
     )
 end
 
+rule "Desease at risk classification high risk 2" extends "Desease classification"
+	agenda-group "deseases"
+	when
+		checkNumberOfHighRisks($userDeseaseRisks, 2;)
+	then
+	    System.out.println("\nDesease at risk classification high risk 2 fired for: " + $deseaseName);
+		$deseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
+		//modify($healthData) { }
+end
+
 // check the number of user risks for one desease marked as high risk
 // userRisks - all risks that the user has and are related to one desease
 query checkNumberOfHighRisks(Set userRisks, int lowerLimit)
@@ -124,13 +92,29 @@ query checkNumberOfHighRisks(Set userRisks, int lowerLimit)
         		action(count += 1;),
         		result(count)		
         )
+
 end
 
-rule "Test rule"
-	agenda-group "desease classification"
-	when
-		$healthData: HealthDataDTO($ds: deseases.size)
-		Number(intValue > 0) from $ds
+rule "Desease at risk classification medium risk " extends "Desease classification"
+	agenda-group "deseases"
+	when	
+        Number(intValue > 3) from $ds
+        not checkNumberOfHighRisks($userDeseaseRisks, 1;)
+		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)     
 	then
-	    System.out.println("\nTest rule fired " + $ds);
+	    System.out.println("\nDesease at risk classification medium risk fired for: " + $deseaseName);
+		$deseaseAtRisk.setRiskLevel(RiskLevel.MEDIUM);
+		//modify($healthData) { }
+end
+
+rule "Desease at risk classification low risk " extends "Desease classification"
+	agenda-group "deseases"
+	when	
+        Number(intValue < 4) from $ds
+        not checkNumberOfHighRisks($userDeseaseRisks, 2;)
+		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)     
+	then
+	    System.out.println("\nDesease at risk classification low risk fired for: " + $deseaseName);
+		$deseaseAtRisk.setRiskLevel(RiskLevel.LOW);
+		//modify($healthData) { }
 end

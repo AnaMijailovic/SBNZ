@@ -1,0 +1,19 @@
+.root {
+    flex-grow: 1;
+}
+
+.img {
+   width: 100% !important;
+   height: 150px !important;
+}
+
+.appBar {
+    background-color: #060312 !important;
+    color: #c6f7f0 !important;
+}
+
+.title{
+    flex-grow: 1;
+    font-family: "Comic Sans MS" !important;
+    font-size: 24px;
+}

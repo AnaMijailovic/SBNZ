@@ -1,0 +1,33 @@
+.root{
+    color: gray;
+    display: flex;
+}
+
+.activitySelect {
+    min-width: 180px;
+}
+
+.stress{
+    max-width: 70%;
+}
+
+.radioGroup{
+    display: flex;
+    flex-direction: row;
+}
+
+.smokerTD {
+    min-width: 190px;
+  /*  display: 'flex',
+    flexDirection: 'row' */
+}
+
+.table {
+    border: solid gray;
+    border-radius: 5%;
+    width: 40%;
+    margin-left: 7%;
+    margin-top: 1%;
+    background-color: #c6f7f0;
+    box-shadow: 5px 10px;
+}

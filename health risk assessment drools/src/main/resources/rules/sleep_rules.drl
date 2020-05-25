@@ -6,13 +6,6 @@ import com.healthriskassessment.model.enums.BMICategory;
 import com.healthriskassessment.model.enums.Gender;
 import com.healthriskassessment.model.enums.ActivityLevel;
 
-/*
-14 - 17   8 – 10   7 – 11 
-18 - 25   7 – 9    6 – 11 
-26 - 64   7 – 9    6 – 10
-65+       7 – 8    5 – 9 
-
-*/
 
 // ***************************************************************************
 //						SET RECOMMENDED SLEEP TIME

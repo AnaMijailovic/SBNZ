@@ -19,12 +19,28 @@ insert into desease (id, name, description ) values (1007, "Cancer", "");
 insert into desease (id, name, description ) values (1008, "Heart attack", "");
 insert into desease (id, name, description ) values (1009, "Osteoporosis", "");
 
+/*
+-- Stroke
+insert into desease_risks (desease_id, risks_id) values (1003, 1002);
+insert into desease_risks (desease_id, risks_id) values (1003, 1003);
+insert into desease_risks (desease_id, risks_id) values (1003, 1004);
+insert into desease_risks (desease_id, risks_id) values (1003, 1001);
+insert into desease_risks (desease_id, risks_id) values (1003, 1006);
+
+-- Diabetes 
+insert into desease_risks (desease_id, risks_id) values (1004, 1002);
+insert into desease_risks (desease_id, risks_id) values (1004, 1003);
+insert into desease_risks (desease_id, risks_id) values (1004, 1004);
+insert into desease_risks (desease_id, risks_id) values (1004, 1001);
+insert into desease_risks (desease_id, risks_id) values (1004, 1006);
+insert into desease_risks (desease_id, risks_id) values (1004, 1005);
+*/
 -- Depression
-insert into desease_risks (desease_id, risks_id) values (1000, 1002);
-insert into desease_risks (desease_id, risks_id) values (1000, 1003);
-insert into desease_risks (desease_id, risks_id) values (1000, 1001);
-insert into desease_risks (desease_id, risks_id) values (1000, 1006);
-insert into desease_risks (desease_id, risks_id) values (1000, 1008);
+--insert into desease_risks (desease_id, risks_id) values (1000, 1002);
+--insert into desease_risks (desease_id, risks_id) values (1000, 1003);
+--insert into desease_risks (desease_id, risks_id) values (1000, 1001);
+--insert into desease_risks (desease_id, risks_id) values (1000, 1006);
+--insert into desease_risks (desease_id, risks_id) values (1000, 1008);
 
 -- Cancer
 insert into desease_risks (desease_id, risks_id) values (1007, 1004);
@@ -34,6 +50,6 @@ insert into desease_risks (desease_id, risks_id) values (1007, 1006);
 insert into desease_risks (desease_id, risks_id) values (1007, 1007);
 
 -- Osteoporosis
--- insert into desease_risks (desease_id, risks_id) values (1009, 1000);
+insert into desease_risks (desease_id, risks_id) values (1009, 1000);
 insert into desease_risks (desease_id, risks_id) values (1009, 1005);
 insert into desease_risks (desease_id, risks_id) values (1009, 1007);
