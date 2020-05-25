@@ -1,10 +1,10 @@
-.root {
+.navbar-root {
     flex-grow: 1;
 }
 
 .img {
    width: 100% !important;
-   height: 150px !important;
+   height: 120px !important;
 }
 
 .appBar {

@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 export default function Navbar() {
   
     return (
-      <div className="root">
+      <div className="navbar-root">
        
         <AppBar position="static" className="appBar">
           <Toolbar>

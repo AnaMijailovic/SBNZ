@@ -1,0 +1,12 @@
+.hd-root {
+    color: gray;
+    display: flex;
+  }
+
+.table {
+    border: solid gray;
+    border-radius: 5%;
+    width: 100%;
+    background-color: #c6f7f0;
+    box-shadow: 5px 10px;
+  }

@@ -89,7 +89,7 @@ export default function UserDataForm({ healthData }) {
                         "drinksPerOccasion": drinksPerOccasion,
                         "drinksPerWeek": drinksPerWeek}
         }
-        alert(JSON.stringify(postData));
+        // alert(JSON.stringify(postData));
 
         axios.post('http://localhost:8081/hra', postData)
             .then((response) => {
@@ -109,7 +109,7 @@ export default function UserDataForm({ healthData }) {
     ); */
 
     return (
-        <form className="root" noValidate autoComplete="off" onSubmit={submit}>
+        <form className="udf-root" noValidate autoComplete="off" onSubmit={submit}>
             <table className="table" align="center">
                 <tbody>
                 <tr>
