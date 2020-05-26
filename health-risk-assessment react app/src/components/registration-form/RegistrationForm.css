@@ -1,0 +1,12 @@
+.registration-form-root{
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border: solid gray;
+    border-radius: 5%;
+    width: 35%;
+    background-color: #c6f7f0;
+    box-shadow: 5px 10px;
+    color: gray;
+}
