@@ -1,6 +1,6 @@
 /* AUTHORITY */
 insert into authority (id, name) values (1, 'ADMIN');
-insert into authority (id, name) values (2, 'REGISTERED');
+insert into authority (id, name) values (2, 'USER');
 
 /* USERS */
 -- password is 'admin' (bcrypt encoded - 10 rounds)
@@ -9,7 +9,7 @@ values ( 1000,'admin1', '$2y$10$c6gNPVh8L.dOpGt40kOliOJVK9UggtR8iNp4HpBfPnOfUaFU
 insert into admin (id, username, password, first_name, last_name, email)
 values ( 1001, 'admin2','$2y$10$c6gNPVh8L.dOpGt40kOliOJVK9UggtR8iNp4HpBfPnOfUaFUM5nYe', 'ana', 'mijailovic', 'anaamm1997@gmail.com');
 insert into registered_user (id, username, password, first_name, last_name, email)
-values ( 10002, 'user', '$2y$10$c6gNPVh8L.dOpGt40kOliOJVK9UggtR8iNp4HpBfPnOfUaFUM5nYe', 'ana', 'mijailovic', 'anam1997@gmail.com');
+values ( 1002, 'user', '$2y$10$c6gNPVh8L.dOpGt40kOliOJVK9UggtR8iNp4HpBfPnOfUaFUM5nYe', 'ana', 'mijailovic', 'anam1997@gmail.com');
 
 
 /* ADDS AUTHORITIES TO  USERS */

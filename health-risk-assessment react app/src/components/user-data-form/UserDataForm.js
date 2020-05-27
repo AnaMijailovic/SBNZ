@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './UserDataForm.css';
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
@@ -11,7 +11,8 @@ import Slider from '@material-ui/core/Slider';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import axios from "axios";
+import deseasesService from '../../services/deseases.service';
+import droolsService from '../../services/drools.service';
 import { Checkbox } from '@material-ui/core';
 
 
@@ -30,7 +31,7 @@ export default function UserDataForm({ healthData }) {
     const [drinksPerWeek, setDrinksPerWeek] = useState('');
     const [gender, setGender] = useState('');
 
-    // var deseases = {}
+    const [deseases, setDeseases] = useState([]);
 
     const handleStressChange = (event, value) => {
         setStressLevel(value);
@@ -91,7 +92,7 @@ export default function UserDataForm({ healthData }) {
         }
         // alert(JSON.stringify(postData));
 
-        axios.post('http://localhost:8081/hra', postData)
+        droolsService.postUserData(postData)
             .then((response) => {
                 console.log('Response: ' + JSON.stringify(response));
                 healthData(response);
@@ -100,13 +101,16 @@ export default function UserDataForm({ healthData }) {
             });
     };
 
-  /*  useEffect(() =>
-          axios.get('http://localhost:8081/hra/deseases')
-              .then((response) => {
-                  console.log(response.data);
-                  deseases = response.data;
-              })
-    ); */
+    useEffect(() => {
+        (async function() {
+            deseasesService.getAll().then((response) => {
+                console.log('Response: ' + JSON.stringify(response.data));
+                setDeseases(response.data);
+            }, (error) => {
+                console.log('Error: ' + error);
+            });
+        })();
+    }, []);
 
     return (
         <form className="udf-root" noValidate autoComplete="off" onSubmit={submit}>

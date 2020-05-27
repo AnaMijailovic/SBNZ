@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Admin extends User{
 
+	private static final long serialVersionUID = 5012633471380988541L;
+
 }

@@ -7,8 +7,12 @@ import {
   BrowserRouter as Router,
   Route
 } from "react-router-dom";
+import {ProtectedRoute} from './components/common/ProtectedRoute';
 import LoginForm from './components/login-form/LoginForm';
 import RegistrationForm from './components/registration-form/RegistrationForm';
+import AdminProfile from './components/admin-profile/AdminProfile';
+import UserProfile from './components/user-profile/UserProfile';
+import authService from './services/auth.service';
 
 function App() {
 
@@ -19,11 +23,12 @@ function App() {
                                                 averageSleepHigherLimit: "",
                                                 deseases: []});
 
+  const [isLoggedIn, setIsLoggedIn] = useState(authService.isLoggedIn());
 
   return (
     <Router>
         <div className="App">
-            <Navbar />
+            <Navbar logged={isLoggedIn} logout={log => setIsLoggedIn(log)}/>
 
             <Route exact path="/">
                 <div className="userDataForm">
@@ -34,8 +39,11 @@ function App() {
                     <HealthData props={ healthData }></HealthData>
                 </div>
             </Route>
-            <Route exact path="/login" component={LoginForm} />
+            <Route exact path="/login" 
+               render={(props) => <LoginForm {...props} logged={log => setIsLoggedIn(log)}  />}/>
             <Route exact path="/registration" component={RegistrationForm} />
+            <ProtectedRoute role="ADMIN" exact path="/admin-profile" component={AdminProfile} />
+            <ProtectedRoute role="USER" exact path="/user-profile" component={UserProfile} />
          </div>
     </Router>
   );

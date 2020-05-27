@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import './RegistrationForm.css'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Snackbar from '../Snackbar';
-import axios from "axios";
+import Snackbar from '../common/Snackbar';
+import AuthService from "../../services/auth.service";
 
 export default function LoginForm() {
     const [username, setUsername] = useState('');
@@ -28,7 +28,7 @@ export default function LoginForm() {
       
       // alert(JSON.stringify(postData));
 
-      axios.post('http://localhost:8081/auth/registration', postData)
+      AuthService.register(postData)
             .then((response) => {
                 console.log('Response: ' + JSON.stringify(response));
                 openSnackbar("Registered successfully!", "success");

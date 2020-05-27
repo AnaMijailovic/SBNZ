@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
-import axios from "axios";
 import './LoginForm.css'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Snackbar from '../Snackbar';
+import Snackbar from '../common/Snackbar';
+import AuthService from "../../services/auth.service";
 
 
-export default function LoginForm() {
+export default function LoginForm( props ) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState({open: false, message: "", type: ""});
 
-  const submit = (event) => {
+  const submit =  async (event) => {
     event.preventDefault();
 
     const postData = {
@@ -21,10 +21,14 @@ export default function LoginForm() {
     
    // alert(JSON.stringify(postData));
 
-    axios.post('http://localhost:8081/auth/login', postData)
-            .then((response) => {
-                console.log('Response: ' + JSON.stringify(response));
-                openSnackbar("Logged in successfully!", "success");
+   AuthService.login(postData).then((response) => {
+                props.logged(true);
+                if (AuthService.getRole() === "ADMIN"){
+                  props.history.push("/admin-profile");
+                } else {
+                  props.history.push("/user-profile");
+                  //openSnackbar("Logged in successfully!", "success");
+                }               
             }, (error) => {
                 console.log('Error: ' + error);
                 openSnackbar("Username or password is incorrect", "error");

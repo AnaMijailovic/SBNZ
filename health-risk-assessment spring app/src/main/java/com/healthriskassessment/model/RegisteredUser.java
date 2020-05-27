@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class RegisteredUser extends User{
 	
+	
+	private static final long serialVersionUID = 3449859740113774596L;
+
 	@OneToOne()
 	private UserData userData;
 	

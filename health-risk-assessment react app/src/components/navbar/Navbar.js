@@ -6,9 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from "react-router-dom";
+import authService  from "../../services/auth.service";
+import Logout from "../logout/Logout";
 
 
-export default function Navbar() {
+export default function Navbar(props) {
   
     return (
       <div className="navbar-root">
@@ -22,10 +24,22 @@ export default function Navbar() {
             <Typography variant="h6" className="title">
             </Typography>
 
-            <Link className="link"  to="/"><Button color="inherit"><i className="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; &nbsp;Home</Button> </Link>
-            <Link className="link"  to="/registration"><Button color="inherit"><i className="fa fa-users fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Registration</Button> </Link>
-            <Link className="link"  to="/login"><Button color="inherit"><i className="fa fa-sign-in fa-2x" aria-hidden="true"></i>&nbsp; &nbsp;Login</Button> </Link>
-          </Toolbar>
+            <Link className="link"  to="/"><Button color="inherit"><i className="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Home {props.logout}</Button> </Link>
+            
+            { !props.logged && (
+              <div>
+                <Link className="link"  to="/registration"><Button color="inherit"><i className="fa fa-users fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Registration</Button> </Link>
+                <Link className="link"  to="/login"><Button color="inherit"><i className="fa fa-sign-in fa-2x" aria-hidden="true"></i>&nbsp; &nbsp;Login</Button> </Link>
+              </div>
+            )}
+
+            { props.logged && (
+              <div>
+                <Link className="link"  to={authService.getRole().toLowerCase() + "-profile"}><Button color="inherit"><i className="fa fa-user fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Profile</Button> </Link>
+                <Logout logged={log => props.logout(log)}/>
+              </div>
+            )}
+            </Toolbar>
           <img className="img" alt="" src= {require('../../static/hra-header4.jpg')} ></img>
         </AppBar>
 
