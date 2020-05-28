@@ -29,9 +29,9 @@ insert into risk (id, name, description) values (1007, "Family history", "");
 insert into risk (id, name, description) values (1008, "Stress", "");
 
 /* DESEASES*/
-insert into desease (id, name, description ) values (1000, "Depression", "");
-insert into desease (id, name, description ) values (1001, "Concentration and memory problems", "");
-insert into desease (id, name, description ) values (1002, "Weakened immune system", "");
+insert into desease (id, name, description ) values (1000, "Depression", "Depression (major depressive disorder) is a common and serious medical illness that negatively affects how you feel, the way you think and how you act. Fortunately, it is also treatable. Depression causes feelings of sadness and/or a loss of interest in activities once enjoyed. It can lead to a variety of emotional and physical problems and can decrease a person’s ability to function at work and at home");
+insert into desease (id, name, description ) values (1001, "Concentration and memory problems", "Concentration problems are a common occurrence for most people, at different times throughout their lives. Experiencing trouble with your ability to hold attention on a task, or lacking the ability to maintain proper focus, can be caused by dietary, environmental, hereditary, chemical or hormonal factors. ");
+insert into desease (id, name, description ) values (1002, "Weakened immune system", "The primary symptom of a weak immune system is susceptibility to infection. A person with a weak immune system is likely to get infections more frequently than most other people, and these illnesses might be more severe or harder to treat. These individuals may also find themselves dealing with an infection that a person with a stronger immune system would not get.");
 insert into desease (id, name, description ) values (1003, "Stroke", "");
 insert into desease (id, name, description ) values (1004, "Diabetes", "");
 insert into desease (id, name, description ) values (1005, "High blood pressure", "");
@@ -40,7 +40,7 @@ insert into desease (id, name, description ) values (1007, "Cancer", "");
 insert into desease (id, name, description ) values (1008, "Heart attack", "");
 insert into desease (id, name, description ) values (1009, "Osteoporosis", "");
 
-/*
+
 -- Stroke
 insert into desease_risks (desease_id, risks_id) values (1003, 1002);
 insert into desease_risks (desease_id, risks_id) values (1003, 1003);
@@ -55,13 +55,13 @@ insert into desease_risks (desease_id, risks_id) values (1004, 1004);
 insert into desease_risks (desease_id, risks_id) values (1004, 1001);
 insert into desease_risks (desease_id, risks_id) values (1004, 1006);
 insert into desease_risks (desease_id, risks_id) values (1004, 1005);
-*/
+
 -- Depression
---insert into desease_risks (desease_id, risks_id) values (1000, 1002);
---insert into desease_risks (desease_id, risks_id) values (1000, 1003);
---insert into desease_risks (desease_id, risks_id) values (1000, 1001);
---insert into desease_risks (desease_id, risks_id) values (1000, 1006);
---insert into desease_risks (desease_id, risks_id) values (1000, 1008);
+insert into desease_risks (desease_id, risks_id) values (1000, 1002);
+insert into desease_risks (desease_id, risks_id) values (1000, 1003);
+insert into desease_risks (desease_id, risks_id) values (1000, 1001);
+insert into desease_risks (desease_id, risks_id) values (1000, 1006);
+insert into desease_risks (desease_id, risks_id) values (1000, 1008);
 
 -- Cancer
 insert into desease_risks (desease_id, risks_id) values (1007, 1004);

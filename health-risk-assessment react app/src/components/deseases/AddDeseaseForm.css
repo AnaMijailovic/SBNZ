@@ -1,16 +1,13 @@
-.login-form-root{
-    margin-top: 7%;
+.add-desease-form-root{
+    margin-top: 3%;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
     border: solid gray 1px;
-    border-radius: 10%;
+    border-radius: 7%;
     width: 35%;
     background-color: #c6f7f0;
     box-shadow: 5px 10px;
     color: gray;
 }
 
-#username{
-    width: 80%;
-}

@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RiskRepository extends JpaRepository<Risk, Long>{
-
+	
+	Risk findByName(String name);
 }

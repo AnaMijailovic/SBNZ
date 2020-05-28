@@ -7,5 +7,6 @@ import com.healthriskassessment.model.Desease;
 
 @Repository
 public interface DeseaseRepository extends JpaRepository<Desease, Long>{
-
-}
+	
+	Desease findByName(String name);
+}	

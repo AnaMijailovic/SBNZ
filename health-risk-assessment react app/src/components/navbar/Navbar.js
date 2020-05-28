@@ -24,7 +24,7 @@ export default function Navbar(props) {
             <Typography variant="h6" className="title">
             </Typography>
 
-            <Link className="link"  to="/"><Button color="inherit"><i className="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Home {props.logout}</Button> </Link>
+            <Link className="link"  to="/"><Button color="inherit"><i className="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Home</Button> </Link>
             
             { !props.logged && (
               <div>
@@ -35,7 +35,9 @@ export default function Navbar(props) {
 
             { props.logged && (
               <div>
-                <Link className="link"  to={authService.getRole().toLowerCase() + "-profile"}><Button color="inherit"><i className="fa fa-user fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Profile</Button> </Link>
+                <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile/deseases"}><Button color="inherit">&nbsp; &nbsp; Deseases</Button> </Link>
+                <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile/risks"}><Button color="inherit">&nbsp; &nbsp; Risks</Button> </Link>
+                <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile"}><Button color="inherit"><i className="fa fa-user fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Profile</Button> </Link>
                 <Logout logged={log => props.logout(log)}/>
               </div>
             )}

@@ -23,7 +23,7 @@
 }
 
 .table {
-    border: solid gray;
+    border: solid gray 1px;
     border-radius: 5%;
     width: 100%;
     background-color: #c6f7f0;

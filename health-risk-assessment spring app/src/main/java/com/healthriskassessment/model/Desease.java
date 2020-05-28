@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class Desease {
 	@Column(unique=true, nullable=false)
 	private String name;
 	
+	@Lob
 	@Column(nullable=false)
 	private String description;
 	

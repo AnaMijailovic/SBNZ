@@ -1,6 +1,5 @@
 package com.healthriskassessment.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,17 +13,30 @@ import com.healthriskassessment.repository.DeseaseRepository;
 
 @Service
 public class DeseaseService {
-	
+
 	@Autowired
 	private DeseaseRepository deseaseRepository;
-	
-	public List<DeseaseDTO> getAll(){
-		
+
+	public List<DeseaseDTO> getAll() {
+
 		List<Desease> deseases = deseaseRepository.findAll();
-		
+
 		return deseases.stream().map(desease -> {
 			return DeseaseConverter.deseaseToDto(desease);
 		}).collect(Collectors.toList());
+	}
+	
+	public DeseaseDTO getByName(String name) {
+
+		Desease desease = deseaseRepository.findByName(name);
+		return DeseaseConverter.deseaseToDto(desease);
+
+	}
+	
+	public Desease addDesease(DeseaseDTO dto) {
+		
+		Desease newDesease = DeseaseConverter.dtoToDesease(dto);
+		return deseaseRepository.save(newDesease);
 	}
 
 }

@@ -42,8 +42,8 @@ function App() {
             <Route exact path="/login" 
                render={(props) => <LoginForm {...props} logged={log => setIsLoggedIn(log)}  />}/>
             <Route exact path="/registration" component={RegistrationForm} />
-            <ProtectedRoute role="ADMIN" exact path="/admin-profile" component={AdminProfile} />
-            <ProtectedRoute role="USER" exact path="/user-profile" component={UserProfile} />
+            <ProtectedRoute role="ADMIN" path="/admin-profile" component={AdminProfile} />
+            <ProtectedRoute role="USER" path="/user-profile" component={UserProfile} />
          </div>
     </Router>
   );
