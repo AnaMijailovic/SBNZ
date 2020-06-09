@@ -1,13 +1,17 @@
 package com.healthriskassessment.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.drools.core.time.SessionPseudoClock;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.healthriskassessment.dto.HealthDataDTO;
 import com.healthriskassessment.dto.UserDataDTO;
+import com.healthriskassessment.event.HeartBeatEvent;
 import com.healthriskassessment.model.enums.ActivityLevel;
 import com.healthriskassessment.model.enums.Gender;
 import com.healthriskassessment.repository.DeseaseRepository;
@@ -15,19 +19,16 @@ import com.healthriskassessment.repository.RiskRepository;
 
 @Service
 public class DroolsService {
-
-	private final KieSession kieSession;
-
+	
+	@Autowired
+	private KieSessionService kieSessionService;
+	
 	@Autowired
 	private RiskRepository riskRepository;
 	
 	@Autowired
 	private DeseaseRepository deseaseRepository;
 
-	@Autowired
-	public DroolsService(KieSession kieSession) {
-		this.kieSession = kieSession;
-	}
 
 	// TODO delete this later
 	public void run() {
@@ -41,7 +42,8 @@ public class DroolsService {
 		HealthDataDTO hd = new HealthDataDTO();
 		hd.setRisks(new ArrayList<>());
 		hd.setDeseases(new ArrayList<>());
-
+		
+		KieSession kieSession = kieSessionService.getHraKieSession();
 		kieSession.insert(ud);
 		kieSession.insert(hd);
 		riskRepository.findAll().forEach(x -> kieSession.insert(x));
@@ -50,9 +52,26 @@ public class DroolsService {
 		kieSession.dispose();
 		System.out.println(hd);
 	}
+	
+	public void events() throws InterruptedException {
+		
+		KieSession kieSession = kieSessionService.getCepKieSession();
+		SessionPseudoClock clock = kieSession.getSessionClock();
+
+		
+		for (int i = 0; i < 80; i++) {
+			HeartBeatEvent hbe = new HeartBeatEvent(clock.getCurrentTime());
+			kieSession.getEntryPoint("beats").insert(hbe);
+			clock.advanceTime(2, TimeUnit.SECONDS);
+		}
+		
+		System.out.println("Rules fired: " + kieSession.fireAllRules());
+		kieSession.dispose();
+
+	}
 
 	public HealthDataDTO getHealthData(UserDataDTO dto) {
-
+		KieSession kieSession = kieSessionService.getHraKieSession();
 		kieSession.insert(dto);
 		riskRepository.findAll().forEach(x -> kieSession.insert(x));
 		deseaseRepository.findAll().forEach(x -> kieSession.insert(x));

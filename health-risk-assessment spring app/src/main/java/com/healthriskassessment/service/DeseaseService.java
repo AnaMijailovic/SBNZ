@@ -33,6 +33,12 @@ public class DeseaseService {
 
 	}
 	
+	public boolean deleteDisease(String name) {
+		Desease disease = deseaseRepository.findByName(name);
+		deseaseRepository.delete(disease);
+		return true;
+	}
+	
 	public Desease addDesease(DeseaseDTO dto) {
 		
 		Desease newDesease = DeseaseConverter.dtoToDesease(dto);

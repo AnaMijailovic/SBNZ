@@ -24,9 +24,10 @@ public class DroolsController {
 	private DroolsService droolsService;
 
 	@GetMapping()
-	public ResponseEntity<String> getDrools() {
+	public ResponseEntity<String> getDrools() throws InterruptedException {
 
-		droolsService.run();
+		// droolsService.run();
+		droolsService.events();
 		return new ResponseEntity<>("This works!", HttpStatus.OK);
 
 	}

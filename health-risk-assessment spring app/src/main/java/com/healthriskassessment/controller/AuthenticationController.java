@@ -21,7 +21,7 @@ import com.healthriskassessment.exceptions.PasswordConfirmationException;
 import com.healthriskassessment.service.UserService;
 
 @RestController
-@CrossOrigin()
+@CrossOrigin
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
 

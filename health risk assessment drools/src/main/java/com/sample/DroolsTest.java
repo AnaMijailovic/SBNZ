@@ -14,7 +14,7 @@ public class DroolsTest {
             // load up the knowledge base
 	        KieServices ks = KieServices.Factory.get();
     	    KieContainer kContainer = ks.getKieClasspathContainer();
-        	KieSession kSession = kContainer.newKieSession("ksession-rules");
+        	KieSession kSession = kContainer.newKieSession("ksession-cep");
 
             // go !
             Message message = new Message();

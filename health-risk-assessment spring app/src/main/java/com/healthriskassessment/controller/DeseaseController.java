@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,7 @@ import com.healthriskassessment.model.Desease;
 import com.healthriskassessment.service.DeseaseService;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/hra/deseases", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DeseaseController {
 
@@ -40,9 +43,20 @@ public class DeseaseController {
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DeseaseDTO> addNewDesease(@RequestBody DeseaseDTO dto){
+	public ResponseEntity<DeseaseDTO> addNewDisease(@RequestBody DeseaseDTO dto){
 		
+		System.out.println(dto);
 		Desease newDesease = deseaseService.addDesease(dto);
 		return new ResponseEntity<>(DeseaseConverter.deseaseToDto(newDesease), HttpStatus.CREATED);
 	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@DeleteMapping(value="/{name}")
+	public ResponseEntity<Boolean> deleteDisease(@PathVariable("name") String name){
+
+		deseaseService.deleteDisease(name);
+		return new ResponseEntity<>(true, HttpStatus.OK);
+	}
+	
+	
 }

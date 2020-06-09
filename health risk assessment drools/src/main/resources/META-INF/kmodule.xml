@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
-    <kbase name="rules" packages="rules">
-        <ksession name="ksession-rules"/>
+    <kbase name="hra-kbase" packages="rules">
+        <ksession name="ksession-hra"/></kbase>
+    <kbase name="cep-kbase" packages="rules.cep"
+    	eventProcessingMode="stream">
+    	<ksession name="ksession-cep" clockType="pseudo"></ksession>
     </kbase>
 </kmodule>

@@ -13,6 +13,10 @@ class DeseasesService {
       return await axios.get(URL + "/" + name);
     }
 
+    deleteDisease(name) {
+      return axios.delete(URL + "/" + name, { headers: authHeader() });
+    }
+
     addNewDesease(postData) {
       return axios.post(URL, postData, { headers: authHeader() });
     }

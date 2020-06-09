@@ -1,10 +1,16 @@
+.disease-card-root{
+    display: flex;
+    flex-direction: row;
+    width: 40%;
+    margin: auto;
+}
+
 .desease-card{
     border: solid gray 1px;
     border-radius: 7px;
     margin-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
-    width: 30%;
     background-color: #c6f7f0;
     box-shadow: 2px 4px gray;
     transition: transform .2s; /* Animation */
@@ -22,4 +28,7 @@
 .dc-link {
     color:black;
     text-decoration: none;
+    width: 90%;
 }
+
+

@@ -1,0 +1,62 @@
+package com.sample
+import com.healthriskassessment.event.HeartBeatEvent;
+import com.healthriskassessment.event.TooManyHeartBeats;
+import com.healthriskassessment.event.InterbeatIntervalEvent;
+import com.healthriskassessment.event.NN50Event;
+
+
+declare window Beats
+	@doc("last 60s heart beats")
+	HeartBeatEvent() over window:time( 60s )
+	from entry-point "beats"
+end
+
+rule "More than 60 heart beats in 1min"
+    when
+       Number(intValue >= 59 ) from accumulate (
+       	$hb: HeartBeatEvent() from window Beats,
+       	count($hb)
+       )
+
+    then
+    	System.out.println("Inserting TooManyHeartBeats with sliding window");
+        insert(new TooManyHeartBeats());
+end 
+
+
+rule "Create InterbeatInterval"
+	when 
+		$beatA: HeartBeatEvent($timestampA: timestamp) from entry-point "beats"
+		$beatB : HeartBeatEvent($timestampB: timestamp, this after[] $beatA) from entry-point "beats" // beatA is before beatB
+	    not ( HeartBeatEvent(this after[] $beatA, this before[] $beatB) from entry-point "beats") // there are no beats between beatA and beatB
+	then
+		insert( new InterbeatIntervalEvent($timestampA, $timestampB-$timestampA, false ));
+		System.out.println("Inserted new IBI");
+end
+
+rule "Calculate NN50"
+	when
+		$intervalA:  InterbeatIntervalEvent($timestampA: startTime, $durationA: duration)
+		$intervalB:  InterbeatIntervalEvent($timestampB: startTime, 
+		                                    $durationB: duration, 
+		                                    this after[] $intervalA,
+		                                    processed == false)
+		not ( InterbeatIntervalEvent(this after[] $intervalA, this before[] $intervalB))
+		
+	then
+		modify($intervalA) { setProcessed(true); }
+		modify($intervalB) { setProcessed(true); }
+		System.out.println("Calclulate NN50 fired");
+
+		if(checkIntervalsDifference($durationA, $durationB)){
+			System.out.println("Add NN50");
+			insert(new NN50Event());
+		}
+end 
+
+function boolean checkIntervalsDifference(long duration1, long duration2) {
+	System.out.println("Durations: " + Math.abs(duration2 - duration1));
+	if(Math.abs(duration2 - duration1) > 50)
+		return true;
+	return false;
+}
