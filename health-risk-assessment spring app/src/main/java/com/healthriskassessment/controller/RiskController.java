@@ -34,4 +34,10 @@ public class RiskController {
 
 		return new ResponseEntity<>(riskService.getByName(name), HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/stressLevel")
+	public ResponseEntity<Integer> calculateStressLevel() {
+
+		return new ResponseEntity<>(riskService.calculateStressLevel(), HttpStatus.OK);
+	}
 }

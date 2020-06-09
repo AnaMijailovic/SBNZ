@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.healthriskassessment.dto.HealthDataDTO;
 import com.healthriskassessment.dto.UserDataDTO;
 import com.healthriskassessment.service.DroolsService;
+import com.healthriskassessment.service.RiskService;
 
 @RestController
 @RequestMapping(value = "/hra", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,12 +23,15 @@ public class DroolsController {
 
 	@Autowired
 	private DroolsService droolsService;
-
+	
+	@Autowired
+	private RiskService riskService;
+	
 	@GetMapping()
 	public ResponseEntity<String> getDrools() throws InterruptedException {
 
 		// droolsService.run();
-		droolsService.events();
+		riskService.calculateStressLevel();
 		return new ResponseEntity<>("This works!", HttpStatus.OK);
 
 	}

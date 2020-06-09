@@ -53,22 +53,6 @@ public class DroolsService {
 		System.out.println(hd);
 	}
 	
-	public void events() throws InterruptedException {
-		
-		KieSession kieSession = kieSessionService.getCepKieSession();
-		SessionPseudoClock clock = kieSession.getSessionClock();
-
-		
-		for (int i = 0; i < 80; i++) {
-			HeartBeatEvent hbe = new HeartBeatEvent(clock.getCurrentTime());
-			kieSession.getEntryPoint("beats").insert(hbe);
-			clock.advanceTime(2, TimeUnit.SECONDS);
-		}
-		
-		System.out.println("Rules fired: " + kieSession.fireAllRules());
-		kieSession.dispose();
-
-	}
 
 	public HealthDataDTO getHealthData(UserDataDTO dto) {
 		KieSession kieSession = kieSessionService.getHraKieSession();

@@ -3,7 +3,9 @@ import com.healthriskassessment.event.HeartBeatEvent;
 import com.healthriskassessment.event.TooManyHeartBeats;
 import com.healthriskassessment.event.InterbeatIntervalEvent;
 import com.healthriskassessment.event.NN50Event;
+import java.util.List;
 
+global Integer stressLevel
 
 declare window Beats
 	@doc("last 60s heart beats")
@@ -11,30 +13,47 @@ declare window Beats
 	from entry-point "beats"
 end
 
-rule "More than 60 heart beats in 1min"
+rule "Create TooManyHeartBeats"
+	salience 200
     when
-       Number(intValue >= 59 ) from accumulate (
+       Number(intValue >= 85 ) from accumulate (
        	$hb: HeartBeatEvent() from window Beats,
        	count($hb)
        )
 
     then
-    	System.out.println("Inserting TooManyHeartBeats with sliding window");
         insert(new TooManyHeartBeats());
 end 
 
-
+// Racuna interval koji prodje izmedju svaka 2 uzastopna otkucaja
 rule "Create InterbeatInterval"
+	salience 200
 	when 
 		$beatA: HeartBeatEvent($timestampA: timestamp) from entry-point "beats"
 		$beatB : HeartBeatEvent($timestampB: timestamp, this after[] $beatA) from entry-point "beats" // beatA is before beatB
 	    not ( HeartBeatEvent(this after[] $beatA, this before[] $beatB) from entry-point "beats") // there are no beats between beatA and beatB
 	then
 		insert( new InterbeatIntervalEvent($timestampA, $timestampB-$timestampA, false ));
-		System.out.println("Inserted new IBI");
-end
+end 
 
+/*
+rule "Create InterbeatInterval"
+	salience 200
+	when 
+		$beats: List(size > 0) from accumulate( 
+			HeartBeatEvent($beat: this) over window:length(2) from entry-point "beats",
+            collectList( $beat) )
+	then
+		Long timestampA = (( HeartBeatEvent) $beats.get(0)).getTimestamp();
+		Long timestampB =  (( HeartBeatEvent) $beats.get(1)).getTimestamp();
+		insert( new InterbeatIntervalEvent(timestampA, timestampB-timestampA, false ));
+end
+*/
+
+
+// NN50 - successive InterbeatIntervals that differ by more than 50 ms
 rule "Calculate NN50"
+	salience 200
 	when
 		$intervalA:  InterbeatIntervalEvent($timestampA: startTime, $durationA: duration)
 		$intervalB:  InterbeatIntervalEvent($timestampB: startTime, 
@@ -46,17 +65,36 @@ rule "Calculate NN50"
 	then
 		modify($intervalA) { setProcessed(true); }
 		modify($intervalB) { setProcessed(true); }
-		System.out.println("Calclulate NN50 fired");
 
-		if(checkIntervalsDifference($durationA, $durationB)){
-			System.out.println("Add NN50");
+		if(Math.abs($durationB - $durationA) > 50){
 			insert(new NN50Event());
 		}
-end 
+end
 
-function boolean checkIntervalsDifference(long duration1, long duration2) {
-	System.out.println("Durations: " + Math.abs(duration2 - duration1));
-	if(Math.abs(duration2 - duration1) > 50)
-		return true;
-	return false;
-}
+
+// Na pocetku ne postoji nijedan InterbeatIntervalEvent u radnoj memoriji
+// Da se ne bi pokrenulo ovo pravilo na pocetku -> manji salience od ostalih pravila
+rule "Calculate stress level" 
+	salience 100
+	when
+		not (InterbeatIntervalEvent(processed == false))
+		$numberOfNN50: Long() from accumulate (
+            NN50Event($nn50: this),
+            count($nn50)
+        )
+		
+		$numberOfTooManyBeats: Long() from accumulate (
+            TooManyHeartBeats($tooManyBeats: this),
+            count($tooManyBeats)
+        )
+        
+	then
+		System.out.println("Number of nn50:  " + $numberOfNN50);
+		System.out.println("Number of too many beats:  " + $numberOfTooManyBeats);
+		int sLevel = 0;
+		sLevel += Math.ceil($numberOfNN50 / 5) +  $numberOfTooManyBeats;
+		if(stressLevel > 10) sLevel = 10; // max value is 10
+		System.out.println("Stress level:  " + stressLevel);
+		drools.getKnowledgeRuntime().setGlobal("stressLevel", sLevel);
+
+end
