@@ -1,5 +1,7 @@
 package com.healthriskassessment.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,10 +30,10 @@ public class DroolsController {
 	private RiskService riskService;
 	
 	@GetMapping()
-	public ResponseEntity<String> getDrools() throws InterruptedException {
+	public ResponseEntity<String> getDrools() throws InterruptedException, IOException {
 
-		// droolsService.run();
-		riskService.calculateStressLevel();
+		droolsService.run();
+		// riskService.calculateStressLevel();
 		return new ResponseEntity<>("This works!", HttpStatus.OK);
 
 	}

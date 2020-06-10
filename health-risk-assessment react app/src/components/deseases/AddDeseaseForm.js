@@ -75,17 +75,17 @@ export default function AddDeseaseForm() {
       <div className="add-desease-form-root">
       <h2>New Disease</h2>
       <form  noValidate autoComplete="off" onSubmit={submit}>
-        <table align="center">
+        <table align="center" className="add-table">
           <tbody>
             <tr>
               <td>
-                <TextField  variant="outlined" required id="name" value={name} onChange={handleChange} label="Name" name="name"/>
+                <TextField className="full"  variant="outlined" required id="name" value={name} onChange={handleChange} label="Name" name="name"/>
               </td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
               <td>
-              <TextField multiline rows={7}  variant="outlined" required id="description" value={description} onChange={handleChange} label="Description" name="description"/>
+              <TextField className="full" multiline rows={10}  variant="outlined" required id="description" value={description} onChange={handleChange} label="Description" name="description"/>
               </td>
             </tr>
               {risks.map(risk =>

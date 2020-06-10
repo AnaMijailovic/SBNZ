@@ -83,5 +83,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/hra");
 		web.ignoring().antMatchers("/hra/deseases/**");
 		web.ignoring().antMatchers("/hra/risks/**");
+		web.ignoring().antMatchers("/hra/rules/**");
 	}
 }

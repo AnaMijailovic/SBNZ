@@ -35,6 +35,7 @@ export default function Navbar(props) {
 
             { props.logged && (
               <div>
+                <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile/new-rule"}><Button color="inherit">&nbsp; &nbsp; New Rule</Button> </Link>
                 <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile/deseases"}><Button color="inherit">&nbsp; &nbsp; Diseases</Button> </Link>
                 <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile/risks"}><Button color="inherit">&nbsp; &nbsp; Risks</Button> </Link>
                 <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile"}><Button color="inherit"><i className="fa fa-user fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Profile</Button> </Link>

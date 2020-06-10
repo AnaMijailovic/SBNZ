@@ -11,6 +11,10 @@ class RisksService {
     async getByName(name) {
       return await axios.get(URL + "/" + name);
     }
+
+    async getStressLevel() {
+      return await axios.get(URL + "/stressLevel");
+    }
  
   }
   

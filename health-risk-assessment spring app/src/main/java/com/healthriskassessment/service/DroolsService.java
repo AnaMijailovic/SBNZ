@@ -1,17 +1,16 @@
 package com.healthriskassessment.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.drools.core.time.SessionPseudoClock;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.healthriskassessment.dto.HealthDataDTO;
 import com.healthriskassessment.dto.UserDataDTO;
-import com.healthriskassessment.event.HeartBeatEvent;
 import com.healthriskassessment.model.enums.ActivityLevel;
 import com.healthriskassessment.model.enums.Gender;
 import com.healthriskassessment.repository.DeseaseRepository;
@@ -31,7 +30,7 @@ public class DroolsService {
 
 
 	// TODO delete this later
-	public void run() {
+	public void run() throws IOException {
 		UserDataDTO ud = new UserDataDTO();
 		ud.setAge(22);
 		ud.setWeight(32);
@@ -74,6 +73,7 @@ public class DroolsService {
 	    kieSession.getAgenda().getAgendaGroup("desease classification").setFocus();
 	    System.out.println(kieSession.fireAllRules());
 		kieSession.dispose();
+		
 		return hd;
 	}
 

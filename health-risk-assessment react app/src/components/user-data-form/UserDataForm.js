@@ -12,6 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import deseasesService from '../../services/deseases.service';
+import risksService from '../../services/risks.service';
 import droolsService from '../../services/drools.service';
 import { Checkbox } from '@material-ui/core';
 
@@ -100,6 +101,18 @@ export default function UserDataForm({ healthData }) {
                 console.log('Error: ' + error);
             });
     };
+
+    const calculateStress = (event) => {
+        event.preventDefault();
+
+        risksService.getStressLevel()
+            .then((response) => {
+                console.log('Response: ' + JSON.stringify(response));
+                setStressLevel(response.data);
+            }, (error) => {
+                console.log('Error: ' + error);
+        });
+    }
 
     useEffect(() => {
         (async function() {
@@ -196,6 +209,10 @@ export default function UserDataForm({ healthData }) {
                         />
                     </td>
                     <td>
+                        <Button align="right" onClick={calculateStress} variant="outlined" color="primary" className="button">
+                            Calculate stress
+                        </Button>
+                        
                         <Button align="right" type="submit" variant="outlined" color="primary" className="button">
                             Submit
                         </Button>
