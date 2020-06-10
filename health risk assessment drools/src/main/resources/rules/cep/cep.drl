@@ -7,6 +7,7 @@ import java.util.List;
 
 global Integer stressLevel
 
+
 declare window Beats
 	@doc("last 60s heart beats")
 	HeartBeatEvent() over window:time( 60s )
@@ -89,12 +90,10 @@ rule "Calculate stress level"
         )
         
 	then
-		System.out.println("Number of nn50:  " + $numberOfNN50);
-		System.out.println("Number of too many beats:  " + $numberOfTooManyBeats);
 		int sLevel = 0;
 		sLevel += Math.ceil($numberOfNN50 / 5) +  $numberOfTooManyBeats;
-		if(stressLevel > 10) sLevel = 10; // max value is 10
-		System.out.println("Stress level:  " + stressLevel);
+		if(sLevel > 10) sLevel = 10; // max value is 10
+		System.out.println("Stress level:  " + sLevel);
 		drools.getKnowledgeRuntime().setGlobal("stressLevel", sLevel);
 
 end
