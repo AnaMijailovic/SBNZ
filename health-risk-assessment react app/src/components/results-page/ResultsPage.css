@@ -1,0 +1,30 @@
+.health-data {
+    width: 30%;
+    margin-left: 2%;
+    margin-top: 1%;
+
+}
+
+.diseases-div {
+    width: 30%;
+    margin-left: 2%;
+}
+
+.risks-div {
+    width: 30%;
+    margin-left: 2%;
+}
+
+.root-div {
+    display: flex;
+    flex-direction: 'row';
+}
+
+/*
+.disease-card-root {
+    width: 90% !important;
+}
+
+.risk-card {
+    width: 82% !important;
+}*/

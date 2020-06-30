@@ -1,0 +1,17 @@
+package com.sample
+
+
+rule "Family history"
+	agenda-group "risks"
+	when 
+		$userData: UserDataDTO($familyHistory: familyHistory, $historySize: familyHistory.size)
+		Number(intValue > 0) from $historySize
+	    $healthData: HealthDataDTO()
+	    $familyHistoryRisk: Risk(name == "Family history")
+	then
+		for (Object familyDisease : $familyHistory ){
+			UserRiskDTO risk = new UserRiskDTO(familyDisease.toString(), $familyHistoryRisk.getDescription(),
+			null);
+			$healthData.getRisks().add(risk);
+		}
+end

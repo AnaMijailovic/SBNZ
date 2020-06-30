@@ -3,12 +3,16 @@
     display: flex;
 }
 
-.activitySelect {
-    min-width: 180px;
+.udf-div {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1%;
 }
 
+
 .stress{
-    max-width: 70%;
+    max-width: 55%;
 }
 
 .radioGroup{
@@ -18,8 +22,8 @@
 
 .smokerTD {
     min-width: 190px;
-  /*  display: 'flex',
-    flexDirection: 'row' */
+    display: 'flex';
+    flex-direction: 'row';
 }
 
 .table {
@@ -28,4 +32,12 @@
     width: 100%;
     background-color: #c6f7f0;
     box-shadow: 5px 10px;
+}
+
+.full-td {
+    width: 70% !important;
+}
+
+.full-td55 {
+    width: 55% !important;
 }

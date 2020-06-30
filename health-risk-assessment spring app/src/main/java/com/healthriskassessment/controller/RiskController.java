@@ -36,7 +36,7 @@ public class RiskController {
 		return new ResponseEntity<>(riskService.getByName(name), HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasAuthority('ADMIN')")
+
 	@GetMapping(value = "/stressLevel")
 	public ResponseEntity<Integer> calculateStressLevel() {
 

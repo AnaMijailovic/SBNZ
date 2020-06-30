@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 export default function DeseaseCard({ disease, deleteDisease }) {
 
+  const isAdmin = authService.getRole() == "ADMIN";
   const deleteDis = (event) => {
       diseasesService.deleteDisease(disease.name).then((response) => {
         console.log('Deleted: ' + response);
@@ -21,16 +22,18 @@ export default function DeseaseCard({ disease, deleteDisease }) {
   }
 
     return (
-      <div class="disease-card-root">
-      <Link className="dc-link" to={"/" + authService.getRole().toLowerCase() + "-profile/deseases/" + disease.name}>
+      <div className="disease-card-root">
+      <Link className="dc-link" to={"/diseases/" + disease.name}>
         <div className="desease-card">
           <p>{disease.name}</p>
         </div>
       </Link>
-
+      
+      { isAdmin && (
       <IconButton aria-label="delete"  onClick={deleteDis}>
                  <DeleteIcon fontSize="large" />
       </IconButton> 
+      )}
       </div>
     );
   }

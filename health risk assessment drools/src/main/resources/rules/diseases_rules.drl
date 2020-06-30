@@ -11,20 +11,27 @@ rule "Find deseases"
 	agenda-group "deseases"
     when
         $desease: Desease($deseaseRisks: risks, $deseaseName: name, $deseaseDescription: description)
+        $userData: UserDataDTO($diagnosedDiseases: diagnosedDiseases)
         $healthData: HealthDataDTO($userRisks: risks)
+        Number(intValue == 0) from accumulate (
+        	Object($name: this.toString(), this.toString() == $deseaseName) from $diagnosedDiseases,
+        	count($name)
+        ) 
         $deseaseRiskNames: List() from accumulate (
             Risk($name: name) from $deseaseRisks, collectList($name)
         )
-        checkForDeseaseRisks($num, $matchingRisks, $deseaseRiskNames, $userRisks;)
+        checkForDeseaseRisks($deseaseName, $num, $matchingRisks, $deseaseRiskNames, $userRisks;)
     then
-    	System.out.println("\nFind deseases fired for desease: " + $deseaseName);
+    	System.out.println("\nFind diseases fired for disease: " + $deseaseName);
     	UserDeseaseDTO UserDeseaseDTO = new UserDeseaseDTO($deseaseName, $deseaseDescription, null, $matchingRisks);
         $healthData.getDeseases().add(UserDeseaseDTO);
 end
 
-query checkForDeseaseRisks(Number $num, Set $matchingRisks,List deseaseRiskNames, List userRisks)
+query checkForDeseaseRisks(String diseaseName, Number $num, Set $matchingRisks, List deseaseRiskNames, List userRisks)
+
     $matchingRisks := Set(size > 0) from accumulate (
-     	UserRiskDTO($risk: this, $name: riskName, riskName memberOf deseaseRiskNames) from userRisks,
+     	UserRiskDTO($risk: this, $name: riskName, riskName memberOf deseaseRiskNames || 
+     	(riskName == diseaseName && "Family history" memberOf deseaseRiskNames)) from userRisks,
      	collectSet($risk)
     )
 

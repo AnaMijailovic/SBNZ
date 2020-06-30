@@ -26,7 +26,8 @@ export default function RiskDetails(props) {
             <p>{risk.description}</p>
           </div>
           <hr/>
-          <h3>Deseases</h3>
+          <h3>Dieases</h3>
+          
          
       </div>
     );

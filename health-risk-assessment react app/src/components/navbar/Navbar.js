@@ -11,6 +11,8 @@ import Logout from "../logout/Logout";
 
 
 export default function Navbar(props) {
+
+  const isAdmin = authService.getRole() == "ADMIN";
   
     return (
       <div className="navbar-root">
@@ -25,6 +27,8 @@ export default function Navbar(props) {
             </Typography>
 
             <Link className="link"  to="/"><Button color="inherit"><i className="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Home</Button> </Link>
+            <Link className="link"  to={"/risks"}><Button color="inherit">&nbsp; &nbsp; Risks</Button> </Link>               
+                <Link className="link"  to={"/diseases"}><Button color="inherit">&nbsp; &nbsp; Diseases</Button> </Link>
             
             { !props.logged && (
               <div>
@@ -35,9 +39,9 @@ export default function Navbar(props) {
 
             { props.logged && (
               <div>
+                { isAdmin && (
                 <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile/new-rule"}><Button color="inherit">&nbsp; &nbsp; New Rule</Button> </Link>
-                <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile/deseases"}><Button color="inherit">&nbsp; &nbsp; Diseases</Button> </Link>
-                <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile/risks"}><Button color="inherit">&nbsp; &nbsp; Risks</Button> </Link>
+                )}
                 <Link className="link"  to={"/" + authService.getRole().toLowerCase() + "-profile"}><Button color="inherit"><i className="fa fa-user fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Profile</Button> </Link>
                 <Logout logged={log => props.logout(log)}/>
               </div>

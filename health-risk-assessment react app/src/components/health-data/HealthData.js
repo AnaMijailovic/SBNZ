@@ -16,13 +16,6 @@ function HealthData({props}) {
           </tr>
           <tr>
             <td><TextField disabled value={props.bmiCategory} label="BMI category" /> </td>
-            <td align="left">
-              <b>Deseases:</b>
-              {props.deseases.map(desease =>
-                  <p> {desease.deseaseName} - {desease.riskLevel} risk
-                  </p>
-                  )}
-            </td>
           </tr>
           <tr>
             <td><TextField disabled value={props.bmrValue} label="BMR value (kcal/day)" /></td>

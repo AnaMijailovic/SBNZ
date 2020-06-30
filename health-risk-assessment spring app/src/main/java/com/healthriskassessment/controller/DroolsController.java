@@ -41,7 +41,9 @@ public class DroolsController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<HealthDataDTO> getHealthData(@RequestBody UserDataDTO dto) {
 		System.out.println("\n DTO: " + dto);
-		return new ResponseEntity<>(droolsService.getHealthData(dto), HttpStatus.OK);
+		HealthDataDTO health = droolsService.getHealthData(dto);
+		System.out.println(health);
+		return new ResponseEntity<>(health, HttpStatus.OK);
 	}
 
 }

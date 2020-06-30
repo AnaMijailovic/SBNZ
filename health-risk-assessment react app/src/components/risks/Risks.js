@@ -4,20 +4,7 @@ import risksService from '../../services/risks.service';
 import RiskCard from './RiskCard';
 
 
-export default function Risks() {
-
-  const [risks, setRisks] = useState([]);
-
-  useEffect(() => {
-      (async function() {
-          risksService.getAll().then((response) => {
-              console.log('Response: ' + JSON.stringify(response.data));
-              setRisks(response.data);
-          }, (error) => {
-              console.log('Error: ' + error);
-          });
-      })();
-  }, []);
+export default function Risks( { risks } ) {
 
     return (
       <div className="risks-root">

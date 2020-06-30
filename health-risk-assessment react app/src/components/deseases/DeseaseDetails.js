@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './DeseaseDetails.css'
 import deseaseService from '../../services/deseases.service';
-import authService from '../../services/auth.service';
 import { Link } from "react-router-dom";
 
 
@@ -31,7 +30,7 @@ export default function DeseaseDetails(props) {
           <hr/>
           <h3>Risks</h3>
           {desease.risks.map(risk =>
-           <Link className="risk-link" to={"/" + authService.getRole().toLowerCase() + "-profile/risks/" + risk.name}> <p> {risk.name}</p>
+           <Link className="risk-link" to={"/risks/" + risk.name}> <p> {risk.name}</p>
            </Link>
           )
           }
