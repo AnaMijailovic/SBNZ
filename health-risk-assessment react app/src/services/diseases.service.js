@@ -20,6 +20,10 @@ class DiseasesService {
     addNewDisease(postData) {
       return axios.post(URL, postData, { headers: authHeader() });
     }
+
+    updateDisease(postData) {
+      return axios.put(URL, postData, { headers: authHeader() });
+    }
  
   }
   

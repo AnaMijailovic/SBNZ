@@ -16,6 +16,7 @@ export default function AddDiseaseForm(props) {
     const [message, setMessage] = useState({open: false, message: "", type: ""});
 
     const [editDisease, setEditDisease] = useState();
+    const [editRisks, setEditRisks] = useState([]);
 
     useEffect(() => {
       (async function() {
@@ -25,7 +26,8 @@ export default function AddDiseaseForm(props) {
               setEditDisease(responseDisease.data);
               setName(responseDisease.data.name);
               setDescription(responseDisease.data.description);
-              setSelectedRisks(responseDisease.data.risks.map(risk => { return risk.name}));
+              setEditRisks(responseDisease.data.risks.map(risk => {return risk.name}));
+              setSelectedRisks(responseDisease.data.risks);
           }, (error) => {
               console.log('Error: ' + error);
           });
@@ -41,21 +43,46 @@ export default function AddDiseaseForm(props) {
       })();
     }, []);
 
+    const updateDisease = async () => {
+      const postData = {
+        "id": editDisease.id,
+        "name": name,
+        "description": description,
+        "risks": selectedRisks
+    }
+
+   diseasesService.updateDisease(postData).then((response) => {
+              openSnackbar("Successfully updated", "success");
+            }, (error) => {
+                console.log('Error: ' + error);
+                openSnackbar("Some error happend", "error");
+            });
+    }
+
+    const addNewDisease = async () => {
+      const postData = {
+        "name": name,
+        "description": description,
+        "risks": selectedRisks
+    }
+
+   diseasesService.addNewDisease(postData).then((response) => {
+              openSnackbar("Successfully added", "success");
+            }, (error) => {
+                console.log('Error: ' + error);
+                openSnackbar("Some error happend", "error");
+            });
+    }
+
     const submit =  async (event) => {
       event.preventDefault();
-     
-      const postData = {
-          "name": name,
-          "description": description,
-          "risks": selectedRisks
+      alert(JSON.stringify(selectedRisks));
+      if (!editDisease){
+        addNewDisease();
+      }else {
+        updateDisease();
       }
-  
-     diseasesService.addNewDisease(postData).then((response) => {
-                openSnackbar("Successfully added", "success");
-              }, (error) => {
-                  console.log('Error: ' + error);
-                  openSnackbar("Some error happend", "error");
-              });
+     
   
     }
       const handleChange = (event) => {
@@ -83,7 +110,12 @@ export default function AddDiseaseForm(props) {
   
     return (
       <div className="add-disease-form-root">
-      <h2>New Disease</h2>
+        {editDisease && (
+           <h2>Update Disease</h2>
+        )}
+        {!editDisease && (
+           <h2>New Disease</h2>
+        )}
       <form  noValidate autoComplete="off" onSubmit={submit}>
         <table align="center" className="add-table">
           <tbody>
@@ -101,7 +133,7 @@ export default function AddDiseaseForm(props) {
               {risks.map(risk =>
                 <tr>
                   <td align="left">
-              <Checkbox color="primary" key={risk.name} id={risk.name} defaultChecked={selectedRisks.includes(risk.name)} label="End" onChange={handleChange} name="risk" value={risk.name}/> {risk.name}
+              <Checkbox color="primary" key={risk.name} id={risk.name} defaultChecked={editRisks.includes(risk.name)} label="End" onChange={handleChange} name="risk" value={risk.name}/> {risk.name}
                   </td>
                 </tr>
               )

@@ -20,6 +20,7 @@ import DiseaseDetails from './components/diseases/DiseaseDetails';
 import RiskDetails from './components/risks/RiskDetails';
 import ResultsPage from './components/results-page/ResultsPage';
 import AddDiseaseForm from './components/diseases/AddDiseaseForm';
+import UpdateRisk from './components/risks/UpdateRisk';
 
 function App() {
 
@@ -89,6 +90,7 @@ const getRisks = () => {
             <ProtectedRoute role="ADMIN" path="/admin-profile" component={AdminProfile} />
             <ProtectedRoute role="USER" path="/user-profile" component={UserProfile} />
             <ProtectedRoute role="ADMIN" path="/edit-disease/:id" component={AddDiseaseForm} />
+            <ProtectedRoute role="ADMIN" path="/edit-risk/:id" component={UpdateRisk} />
          </div>
     </Router>
   );

@@ -1,9 +1,6 @@
 package com.healthriskassessment.service;
 
-
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import org.kie.api.runtime.KieSession;
@@ -19,16 +16,15 @@ import com.healthriskassessment.repository.RiskRepository;
 
 @Service
 public class DroolsService {
-	
+
 	@Autowired
 	private KieSessionService kieSessionService;
-	
+
 	@Autowired
 	private RiskRepository riskRepository;
-	
+
 	@Autowired
 	private DiseaseRepository diseaseRepository;
-
 
 	// TODO delete this later
 	public void run() throws IOException {
@@ -42,7 +38,7 @@ public class DroolsService {
 		HealthDataDTO hd = new HealthDataDTO();
 		hd.setRisks(new ArrayList<>());
 		hd.setDiseases(new ArrayList<>());
-		
+
 		KieSession kieSession = kieSessionService.getHraKieSession();
 		kieSession.insert(ud);
 		kieSession.insert(hd);
@@ -52,7 +48,6 @@ public class DroolsService {
 		kieSession.dispose();
 		System.out.println(hd);
 	}
-	
 
 	public HealthDataDTO getHealthData(UserDataDTO dto) {
 		KieSession kieSession = kieSessionService.getHraKieSession();
@@ -63,18 +58,18 @@ public class DroolsService {
 		hd.setRisks(new ArrayList<>());
 		hd.setDiseases(new ArrayList<>());
 		kieSession.insert(hd);
-		
+
 		kieSession.getAgenda().getAgendaGroup("risks").setFocus();
 		System.out.println("Fire all: " + kieSession.fireAllRules());
 		System.out.println("Facts num: " + kieSession.getFactCount());
 		kieSession.getAgenda().getAgendaGroup("diseases").setFocus();
-	    System.out.println(kieSession.fireAllRules());
-	    System.out.println("Facts num: " + kieSession.getFactCount());
-	    
-	    kieSession.getAgenda().getAgendaGroup("disease classification").setFocus();
-	    System.out.println(kieSession.fireAllRules());
+		System.out.println(kieSession.fireAllRules());
+		System.out.println("Facts num: " + kieSession.getFactCount());
+
+		kieSession.getAgenda().getAgendaGroup("disease classification").setFocus();
+		System.out.println(kieSession.fireAllRules());
 		kieSession.dispose();
-		
+
 		return hd;
 	}
 

@@ -39,7 +39,7 @@ export default function DiseaseDetails(props) {
 
           {authService.getRole() === 'ADMIN' && (
                                 <Link className="link" to={"/edit-disease/" + disease.name}>
-                                  <Button className="edit-btn" onClick="" variant="contained" color="primary">Edit</Button>
+                                  <Button className="edit-btn" onClick="" variant="contained" color="primary">Update</Button>
                                 </Link>
           )}
       </div>
