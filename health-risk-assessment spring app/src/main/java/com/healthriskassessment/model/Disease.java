@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Desease {
+public class Disease {
 	
 	@Id
 	@GeneratedValue

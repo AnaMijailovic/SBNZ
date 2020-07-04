@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) {
 		// TokenAuthenticationFilter will ignore the following
 		web.ignoring().antMatchers("/hra");
-		web.ignoring().antMatchers("/hra/deseases/**");
+		web.ignoring().antMatchers("/hra/diseases/**");
 		web.ignoring().antMatchers("/hra/risks/**");
 		web.ignoring().antMatchers("/hra/rules/**");
 	}

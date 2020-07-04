@@ -14,7 +14,7 @@ import com.healthriskassessment.dto.HealthDataDTO;
 import com.healthriskassessment.dto.UserDataDTO;
 import com.healthriskassessment.model.enums.ActivityLevel;
 import com.healthriskassessment.model.enums.Gender;
-import com.healthriskassessment.repository.DeseaseRepository;
+import com.healthriskassessment.repository.DiseaseRepository;
 import com.healthriskassessment.repository.RiskRepository;
 
 @Service
@@ -27,7 +27,7 @@ public class DroolsService {
 	private RiskRepository riskRepository;
 	
 	@Autowired
-	private DeseaseRepository deseaseRepository;
+	private DiseaseRepository diseaseRepository;
 
 
 	// TODO delete this later
@@ -41,7 +41,7 @@ public class DroolsService {
 		ud.setActivityLevel(ActivityLevel.MODERATELY_ACTIVE);
 		HealthDataDTO hd = new HealthDataDTO();
 		hd.setRisks(new ArrayList<>());
-		hd.setDeseases(new ArrayList<>());
+		hd.setDiseases(new ArrayList<>());
 		
 		KieSession kieSession = kieSessionService.getHraKieSession();
 		kieSession.insert(ud);
@@ -58,20 +58,20 @@ public class DroolsService {
 		KieSession kieSession = kieSessionService.getHraKieSession();
 		kieSession.insert(dto);
 		riskRepository.findAll().forEach(x -> kieSession.insert(x));
-		deseaseRepository.findAll().forEach(x -> kieSession.insert(x));
+		diseaseRepository.findAll().forEach(x -> kieSession.insert(x));
 		HealthDataDTO hd = new HealthDataDTO();
 		hd.setRisks(new ArrayList<>());
-		hd.setDeseases(new ArrayList<>());
+		hd.setDiseases(new ArrayList<>());
 		kieSession.insert(hd);
 		
 		kieSession.getAgenda().getAgendaGroup("risks").setFocus();
 		System.out.println("Fire all: " + kieSession.fireAllRules());
 		System.out.println("Facts num: " + kieSession.getFactCount());
-		kieSession.getAgenda().getAgendaGroup("deseases").setFocus();
+		kieSession.getAgenda().getAgendaGroup("diseases").setFocus();
 	    System.out.println(kieSession.fireAllRules());
 	    System.out.println("Facts num: " + kieSession.getFactCount());
 	    
-	    kieSession.getAgenda().getAgendaGroup("desease classification").setFocus();
+	    kieSession.getAgenda().getAgendaGroup("disease classification").setFocus();
 	    System.out.println(kieSession.fireAllRules());
 		kieSession.dispose();
 		

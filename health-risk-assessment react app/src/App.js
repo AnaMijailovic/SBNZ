@@ -12,13 +12,14 @@ import RegistrationForm from './components/registration-form/RegistrationForm';
 import AdminProfile from './components/admin-profile/AdminProfile';
 import UserProfile from './components/user-profile/UserProfile';
 import authService from './services/auth.service';
-import deseasesService from './services/deseases.service';
+import diseasesService from './services/diseases.service';
 import risksService from './services/risks.service';
-import Deseases from './components/deseases/Deseases';
+import Diseases from './components/diseases/Diseases';
 import Risks from './components/risks/Risks';
-import DeseaseDetails from './components/deseases/DeseaseDetails';
+import DiseaseDetails from './components/diseases/DiseaseDetails';
 import RiskDetails from './components/risks/RiskDetails';
 import ResultsPage from './components/results-page/ResultsPage';
+import AddDiseaseForm from './components/diseases/AddDiseaseForm';
 
 function App() {
 
@@ -27,7 +28,7 @@ function App() {
                                                 kgTillNormal: "",
                                                 averageSleepLowerLimit: "",
                                                 averageSleepHigherLimit: "",
-                                                deseases: []});
+                                                diseases: []});
 
   const [isLoggedIn, setIsLoggedIn] = useState(authService.isLoggedIn());
 
@@ -36,13 +37,13 @@ function App() {
 
   useEffect(() => {
     (async function() {
-       getDeseases();
+       getDiseases();
        getRisks();
     })();
 }, []);
 
-const getDeseases = () => {
-    deseasesService.getAll().then((response) => {
+const getDiseases = () => {
+    diseasesService.getAll().then((response) => {
         console.log('Response: ' + JSON.stringify(response.data));
         setDiseases(response.data);
     }, (error) => {
@@ -79,14 +80,15 @@ const getRisks = () => {
             <Route exact path="/risks"
                 render={(props) => <div className="risks"><Risks {...props } risks={ risks }  /> </div>} />
             <Route exact path="/diseases"
-                render={(props) => <div className="diseases"> <Deseases {...props } diseases={ diseases }  /> </div>} />
-            <Route exact path="/diseases/:id" component={DeseaseDetails} />
+                render={(props) => <div className="diseases"> <Diseases {...props } diseases={ diseases }  /> </div>} />
+            <Route exact path="/diseases/:id" component={DiseaseDetails} />
             <Route exact path="/risks/:id" component={RiskDetails} />
             <Route exact path="/login" 
                render={(props) => <LoginForm {...props} logged={log => setIsLoggedIn(log)}  />}/>
             <Route exact path="/registration" component={RegistrationForm} />
             <ProtectedRoute role="ADMIN" path="/admin-profile" component={AdminProfile} />
             <ProtectedRoute role="USER" path="/user-profile" component={UserProfile} />
+            <ProtectedRoute role="ADMIN" path="/edit-disease/:id" component={AddDiseaseForm} />
          </div>
     </Router>
   );

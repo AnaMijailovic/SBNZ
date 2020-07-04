@@ -1,96 +1,96 @@
 package com.sample
 
-import com.healthriskassessment.model.Desease;
+import com.healthriskassessment.model.Disease;
 import com.healthriskassessment.dto.UserRiskDTO;
-import com.healthriskassessment.dto.UserDeseaseDTO;
+import com.healthriskassessment.dto.UserDiseaseDTO;
 import java.util.List;
 import java.util.Set;
 
 
-rule "Find deseases"
-	agenda-group "deseases"
+rule "Find diseases"
+	agenda-group "diseases"
     when
-        $desease: Desease($deseaseRisks: risks, $deseaseName: name, $deseaseDescription: description)
+        $disease: Disease($diseaseRisks: risks, $diseaseName: name, $diseaseDescription: description)
         $userData: UserDataDTO($diagnosedDiseases: diagnosedDiseases)
         $healthData: HealthDataDTO($userRisks: risks)
         Number(intValue == 0) from accumulate (
-        	Object($name: this.toString(), this.toString() == $deseaseName) from $diagnosedDiseases,
+        	Object($name: this.toString(), this.toString() == $diseaseName) from $diagnosedDiseases,
         	count($name)
         ) 
-        $deseaseRiskNames: List() from accumulate (
-            Risk($name: name) from $deseaseRisks, collectList($name)
+        $diseaseRiskNames: List() from accumulate (
+            Risk($name: name) from $diseaseRisks, collectList($name)
         )
-        checkForDeseaseRisks($deseaseName, $num, $matchingRisks, $deseaseRiskNames, $userRisks;)
+        checkForDiseaseRisks($diseaseName, $num, $matchingRisks, $diseaseRiskNames, $userRisks;)
     then
-    	System.out.println("\nFind diseases fired for disease: " + $deseaseName);
-    	UserDeseaseDTO UserDeseaseDTO = new UserDeseaseDTO($deseaseName, $deseaseDescription, null, $matchingRisks);
-        $healthData.getDeseases().add(UserDeseaseDTO);
+    	System.out.println("\nFind diseases fired for disease: " + $diseaseName);
+    	UserDiseaseDTO userDiseaseDTO = new UserDiseaseDTO($diseaseName, $diseaseDescription, null, $matchingRisks);
+        $healthData.getDiseases().add(userDiseaseDTO);
 end
 
-query checkForDeseaseRisks(String diseaseName, Number $num, Set $matchingRisks, List deseaseRiskNames, List userRisks)
+query checkForDiseaseRisks(String diseaseName, Number $num, Set $matchingRisks, List diseaseRiskNames, List userRisks)
 
     $matchingRisks := Set(size > 0) from accumulate (
-     	UserRiskDTO($risk: this, $name: riskName, riskName memberOf deseaseRiskNames || 
-     	(riskName == diseaseName && "Family history" memberOf deseaseRiskNames)) from userRisks,
+     	UserRiskDTO($risk: this, $name: riskName, riskName memberOf diseaseRiskNames || 
+     	(riskName == diseaseName && "Family history" memberOf diseaseRiskNames)) from userRisks,
      	collectSet($risk)
     )
 
 end
 
 // **************************************************************************
-//						DESEASE AT RISK CLASSIFICATION
+//						DISEASE AT RISK CLASSIFICATION
 // **************************************************************************
 
-rule "Desease classification"
-	agenda-group "deseases"
+rule "Disease classification"
+	agenda-group "diseases"
 	enabled false
 	when
-		$healthData: HealthDataDTO($deseases: deseases, $ds: deseases.size) @Watch(deseases)
-		$deseaseAtRisk: UserDeseaseDTO(riskLevel == null, $deseaseName: deseaseName,
-			$userDeseaseRisks: risks ) from $deseases // all risks that the user has
-		$desease: Desease(name == $deseaseName, $allDeseaseRisks: risks) // all risks that may affect this disease
+		$healthData: HealthDataDTO($diseases: diseases, $ds: diseases.size) @Watch(diseases)
+		$diseaseAtRisk: UserDiseaseDTO(riskLevel == null, $diseaseName: diseaseName,
+			$userDiseaseRisks: risks ) from $diseases // all risks that the user has
+		$disease: Disease(name == $diseaseName, $alldiseaseRisks: risks) // all risks that may affect this disease
 	then
 end
 
-rule "Desease at risk classification high risk" extends "Desease classification"
-	agenda-group "deseases"
+rule "Disease at risk classification high risk" extends "Disease classification"
+	agenda-group "diseases"
 	when
-		checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)
+		checkNumberOfRisks($allDiseaseRisks, $userDiseaseRisks;)
 	then
-	    System.out.println("\nDesease at risk classification high risk fired for: " + $deseaseName);
-	    $deseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
+	    System.out.println("\nDisease at risk classification high risk fired for: " + $diseaseName);
+	    $diseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
 		//modify($healthData) { }
 end
 
 // check if the user has all the risks that affect a disease / or one risk is missing
 // desesaseRisks - all risks that may affect this disease
-// userRisks - all risks that the user has and are related to this desease
-query checkNumberOfRisks(Set deseaseRisks, Set userRisks)
+// userRisks - all risks that the user has and are related to this disease
+query checkNumberOfRisks(Set diseaseRisks, Set userRisks)
 
- 	$deseaseRiskNames := List() from accumulate (
-            Risk($name: name) from deseaseRisks, collectList($name)
+ 	$diseaseRiskNames := List() from accumulate (
+            Risk($name: name) from diseaseRisks, collectList($name)
         )
  
-    $num := Number(intValue >= $deseaseRiskNames.size() - 1 ) from accumulate(
-        UserRiskDTO($name: riskName, riskName memberOf $deseaseRiskNames) from userRisks,
+    $num := Number(intValue >= $diseaseRiskNames.size() - 1 ) from accumulate(
+        UserRiskDTO($name: riskName, riskName memberOf $diseaseRiskNames) from userRisks,
         init(int count = 0;),
         action(count += 1;),
         result(count)
     )
 end
 
-rule "Desease at risk classification high risk 2" extends "Desease classification"
-	agenda-group "deseases"
+rule "Disease at risk classification high risk 2" extends "Disease classification"
+	agenda-group "diseases"
 	when
-		checkNumberOfHighRisks($userDeseaseRisks, 2;)
+		checkNumberOfHighRisks($userDiseaseRisks, 2;)
 	then
-	    System.out.println("\nDesease at risk classification high risk 2 fired for: " + $deseaseName);
-		$deseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
+	    System.out.println("\nDisease at risk classification high risk 2 fired for: " + $diseaseName);
+		$diseaseAtRisk.setRiskLevel(RiskLevel.HIGH);
 		//modify($healthData) { }
 end
 
-// check the number of user risks for one desease marked as high risk
-// userRisks - all risks that the user has and are related to one desease
+// check the number of user risks for one disease marked as high risk
+// userRisks - all risks that the user has and are related to one disease
 query checkNumberOfHighRisks(Set userRisks, int lowerLimit)
 
  		$highRisks: Number(intValue > lowerLimit) from accumulate(
@@ -102,26 +102,26 @@ query checkNumberOfHighRisks(Set userRisks, int lowerLimit)
 
 end
 
-rule "Desease at risk classification medium risk " extends "Desease classification"
-	agenda-group "deseases"
+rule "Disease at risk classification medium risk " extends "Disease classification"
+	agenda-group "diseases"
 	when	
         Number(intValue > 3) from $ds
-        not checkNumberOfHighRisks($userDeseaseRisks, 1;)
-		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)     
+        not checkNumberOfHighRisks($userDiseaseRisks, 1;)
+		not checkNumberOfRisks($allDiseaseRisks, $userDiseaseRisks;)     
 	then
-	    System.out.println("\nDesease at risk classification medium risk fired for: " + $deseaseName);
-		$deseaseAtRisk.setRiskLevel(RiskLevel.MEDIUM);
+	    System.out.println("\nDisease at risk classification medium risk fired for: " + $diseaseName);
+		$diseaseAtRisk.setRiskLevel(RiskLevel.MEDIUM);
 		//modify($healthData) { }
 end
 
-rule "Desease at risk classification low risk " extends "Desease classification"
-	agenda-group "deseases"
+rule "Disease at risk classification low risk " extends "Disease classification"
+	agenda-group "diseases"
 	when	
         Number(intValue < 4) from $ds
-        not checkNumberOfHighRisks($userDeseaseRisks, 2;)
-		not checkNumberOfRisks($allDeseaseRisks, $userDeseaseRisks;)     
+        not checkNumberOfHighRisks($userDiseaseRisks, 2;)
+		not checkNumberOfRisks($allDiseaseRisks, $userDiseaseRisks;)     
 	then
-	    System.out.println("\nDesease at risk classification low risk fired for: " + $deseaseName);
-		$deseaseAtRisk.setRiskLevel(RiskLevel.LOW);
+	    System.out.println("\nDisease at risk classification low risk fired for: " + $diseaseName);
+		$diseaseAtRisk.setRiskLevel(RiskLevel.LOW);
 		//modify($healthData) { }
 end

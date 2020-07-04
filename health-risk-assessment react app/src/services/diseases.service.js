@@ -1,9 +1,9 @@
 import axios from "axios";
 import authHeader from './auth-header';
 
-const URL = "http://localhost:8081/hra/deseases";
+const URL = "http://localhost:8081/hra/diseases";
 
-class DeseasesService {
+class DiseasesService {
 
     async getAll() {
       return await axios.get(URL);
@@ -17,10 +17,10 @@ class DeseasesService {
       return axios.delete(URL + "/" + name, { headers: authHeader() });
     }
 
-    addNewDesease(postData) {
+    addNewDisease(postData) {
       return axios.post(URL, postData, { headers: authHeader() });
     }
  
   }
   
-  export default new DeseasesService();
+  export default new DiseasesService();

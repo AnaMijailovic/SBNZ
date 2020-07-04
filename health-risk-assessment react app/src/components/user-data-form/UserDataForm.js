@@ -12,13 +12,13 @@ import Slider from '@material-ui/core/Slider';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import deseasesService from '../../services/deseases.service';
 import risksService from '../../services/risks.service';
 import droolsService from '../../services/drools.service';
 import { Checkbox } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
+import Snackbar from '../common/Snackbar';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -57,6 +57,7 @@ function getStyles(name, personName, theme) {
                 : theme.typography.fontWeightMedium,
     };
 }
+
 export default function UserDataForm({ diseases, healthData }) {
     const [age, setAge] = useState('');
     const [height, setHeight] = useState('');
@@ -74,10 +75,16 @@ export default function UserDataForm({ diseases, healthData }) {
     const [familyHistoryDiseases, setFamilyHistoryDiseases] = React.useState([]);
     const [diagnosedDiseases, setDiagnosedDiseases] = React.useState([]);
 
+    const [message, setMessage] = useState({open: false, message: "", type: ""});
+
     let history = useHistory();
 
     const classes = useStyles();
     const theme = useTheme();
+
+    const openSnackbar = (message, type) => {
+        setMessage({open: true, message: message, type: type });
+      };
 
     const handleStressChange = (event, value) => {
         setStressLevel(value);
@@ -168,11 +175,12 @@ export default function UserDataForm({ diseases, healthData }) {
 
     const calculateStress = (event) => {
         event.preventDefault();
-        alert(JSON.stringify(diseases[0]));
+       // alert(JSON.stringify(diseases[0]));
         risksService.getStressLevel()
             .then((response) => {
                 console.log('Response: ' + JSON.stringify(response));
                 setStressLevel(response.data);
+                openSnackbar("Calculated", "success");
             }, (error) => {
                 console.log('Error: ' + error);
             });
@@ -335,6 +343,7 @@ export default function UserDataForm({ diseases, healthData }) {
                     </tbody>
                 </table>
             </form>
+            <Snackbar props={ message } />
         </div>
     );
 }

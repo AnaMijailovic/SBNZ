@@ -16,7 +16,7 @@ import org.kie.api.runtime.KieSession;
 import com.healthriskassessment.dto.AlcoholDTO;
 import com.healthriskassessment.dto.HealthDataDTO;
 import com.healthriskassessment.dto.UserDataDTO;
-import com.healthriskassessment.model.Desease;
+import com.healthriskassessment.model.Disease;
 import com.healthriskassessment.model.Risk;
 import com.healthriskassessment.model.enums.ActivityLevel;
 import com.healthriskassessment.model.enums.BMICategory;
@@ -124,7 +124,7 @@ public class DiseasesTest {
 		
 		// Obesity, sleep deprivation i drinking -> uticu na cancer
 		// Sleep deprivation i drinking su oba u ovom slucaju high risk
-		// "Desease at risk classification high risk 2" se okida
+		// "Disease at risk classification high risk 2" se okida
 		@Test
 		public void cancerHighRisk() {
 			
@@ -184,8 +184,8 @@ public class DiseasesTest {
 			cancerRisks.add(smoking);
 			cancerRisks.add(drinking);
 			cancerRisks.add(obesity);
-			List<Desease> deseases =  new ArrayList<>();
-			deseases.add(new Desease(null, "Cancer", "", cancerRisks));
+			List<Disease> deseases =  new ArrayList<>();
+			deseases.add(new Disease(null, "Cancer", "", cancerRisks));
 			
 			risks.forEach(risk -> kieSession.insert(risk));
 			deseases.forEach(desease -> kieSession.insert(desease));

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import './Deseases.css'
+import './Diseases.css'
 import UserDiseaseCard from './UserDiseaseCard';
 
 
 export default function UserDiseases( { diseases } ) {
 
     return (
-        <div className="deseases-root">
+        <div className="diseases-root">
             <h1>Diseases</h1>
             <div>
                 {diseases.map(disease =>

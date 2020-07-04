@@ -24,6 +24,6 @@ public class HealthDataDTO {
 	private int averageSleepLowerLimit;
 	private int averageSleepHigherLimit;
 	private List<UserRiskDTO> risks;
-	private List<UserDeseaseDTO> deseases;
+	private List<UserDiseaseDTO> diseases;
 	
 }

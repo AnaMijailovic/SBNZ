@@ -52,10 +52,10 @@ public class UserData {
 	
 	// diseases from which any of the family members suffers/suffered
 	@ManyToMany
-	private Set<Desease> familyHistory;
+	private Set<Disease> familyHistory;
 	
 	// diseases that have already been diagnosed to this user
 	@ManyToMany
-	private Set<Desease> diagnosedDeseases;
+	private Set<Disease> diagnosedDeseases;
 
 }

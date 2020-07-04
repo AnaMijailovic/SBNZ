@@ -1,15 +1,16 @@
-.desease-details{
+.disease-details{
     border: solid gray 1px;
-    border-radius: 7px;
-    margin-bottom: 10px;
+    border-radius: 2%;
+    margin-bottom: 2%;
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
+    padding: 1%;
+    width: 42%;
     background-color: #c6f7f0;
     box-shadow: 2px 4px gray;
 }
 
-.desease-description{
+.disease-description{
     text-align: left;
     padding: 4%;
 }
@@ -22,4 +23,8 @@
 hr{
     width: 90%;
     color: gray;
+}
+
+.edit-btn {
+    margin-bottom: 1%;
 }

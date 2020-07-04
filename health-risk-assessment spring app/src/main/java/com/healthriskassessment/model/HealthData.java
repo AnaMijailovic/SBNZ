@@ -36,6 +36,6 @@ public class HealthData {
 	@OneToMany
 	private Set<UserRisk> risks;
 	@ManyToMany
-	private Set<UserDesease> deseases;
+	private Set<UserDisease> deseases;
 
 }

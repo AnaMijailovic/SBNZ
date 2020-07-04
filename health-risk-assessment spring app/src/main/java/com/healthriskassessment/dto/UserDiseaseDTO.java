@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDeseaseDTO {
+public class UserDiseaseDTO {
 	
-	private String deseaseName;
-	private String deseaseDescription;
+	private String diseaseName;
+	private String diseaseDescription;
 	
 	// estimated level of risk of developing this disease
 	private RiskLevel riskLevel;

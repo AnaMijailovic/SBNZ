@@ -16,45 +16,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.healthriskassessment.converters.DeseaseConverter;
-import com.healthriskassessment.dto.DeseaseDTO;
-import com.healthriskassessment.model.Desease;
-import com.healthriskassessment.service.DeseaseService;
+import com.healthriskassessment.converters.DiseaseConverter;
+import com.healthriskassessment.dto.DiseaseDTO;
+import com.healthriskassessment.model.Disease;
+import com.healthriskassessment.service.DiseaseService;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/hra/deseases", produces = MediaType.APPLICATION_JSON_VALUE)
-public class DeseaseController {
+@RequestMapping(value = "/hra/diseases", produces = MediaType.APPLICATION_JSON_VALUE)
+public class DiseaseController {
 
 	@Autowired
-	private DeseaseService deseaseService;
+	private DiseaseService diseaseService;
 
 	@GetMapping
-	public ResponseEntity<List<DeseaseDTO>> getAll() {
+	public ResponseEntity<List<DiseaseDTO>> getAll() {
 
-		return new ResponseEntity<>(deseaseService.getAll(), HttpStatus.OK);
+		return new ResponseEntity<>(diseaseService.getAll(), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{name}")
-	public ResponseEntity<DeseaseDTO> getByName(@PathVariable("name") String name) {
+	public ResponseEntity<DiseaseDTO> getByName(@PathVariable("name") String name) {
 		
-		return new ResponseEntity<>(deseaseService.getByName(name), HttpStatus.OK);
+		return new ResponseEntity<>(diseaseService.getByName(name), HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DeseaseDTO> addNewDisease(@RequestBody DeseaseDTO dto){
+	public ResponseEntity<DiseaseDTO> addNewDisease(@RequestBody DiseaseDTO dto){
 		
 		System.out.println(dto);
-		Desease newDesease = deseaseService.addDesease(dto);
-		return new ResponseEntity<>(DeseaseConverter.deseaseToDto(newDesease), HttpStatus.CREATED);
+		Disease newDisease = diseaseService.addDisease(dto);
+		return new ResponseEntity<>(DiseaseConverter.diseaseToDto(newDisease), HttpStatus.CREATED);
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping(value="/{name}")
 	public ResponseEntity<Boolean> deleteDisease(@PathVariable("name") String name){
 
-		deseaseService.deleteDisease(name);
+		diseaseService.deleteDisease(name);
 		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 	

@@ -19,14 +19,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class UserDesease {
+public class UserDisease {
 	
 	@Id
 	@GeneratedValue
 	private Long id;
 	
 	@ManyToOne
-	private Desease desease;
+	private Disease disease;
 	
 	// estimated level of risk of developing this disease
 	private RiskLevel riskLevel;

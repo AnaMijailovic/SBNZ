@@ -1,35 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import './Deseases.css'
-import deseasesService from '../../services/deseases.service';
-import DeseaseCard from './DeseaseCard';
+import React from 'react';
+import './Diseases.css';
+import DiseaseCard from './DiseaseCard';
 import { Link } from "react-router-dom";
 import authService from "../../services/auth.service";
 import Button from '@material-ui/core/Button';
 
-export default function Deseases( { diseases } ) {
+export default function Diseases( { diseases } ) {
 
     const isAdmin = authService.getRole() == "ADMIN";
 
     const removeDisease = (name) => {
         const exists = diseases.filter(obj => { return obj.name === name });
         if (exists.length > 0) {
-           // getDeseases();
+           // getDiseases();
         }
     }
 
     return (
-        <div className="deseases-root">
+        <div className="diseases-root">
             <h1>Diseases</h1>
             {isAdmin && (
                 <div>
-                    <Link className="link" to={"/" + authService.getRole().toLowerCase() + "-profile/new-desease"}><Button variant="contained" color="primary">New Disease</Button> </Link>
+                    <Link className="link" to={"/" + authService.getRole().toLowerCase() + "-profile/new-disease"}><Button variant="contained" color="primary">New Disease</Button> </Link>
                     <br />
                     <br/>
                 </div>
             )}
             <div>
                 {diseases.map(disease =>
-                    (<DeseaseCard class="card" key={disease.id} disease={disease} deleteDisease={del => removeDisease(del)} />
+                    (<DiseaseCard class="card" key={disease.id} disease={disease} deleteDisease={del => removeDisease(del)} />
 
                     )
                 )
