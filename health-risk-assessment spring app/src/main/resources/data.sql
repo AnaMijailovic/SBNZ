@@ -111,3 +111,20 @@ insert into disease_risks (disease_id, risks_id) values (1008, 1008);
 insert into disease_risks (disease_id, risks_id) values (1009, 1003);
 insert into disease_risks (disease_id, risks_id) values (1009, 1005);
 insert into disease_risks (disease_id, risks_id) values (1009, 1007);
+
+-- UserDiseases
+insert into user_disease (id, risk_level, disease_id) values (1000, 3, 1000);
+insert into user_disease (id, risk_level, disease_id) values (1001, 2, 1005);
+
+-- UserData
+insert into user_data (id, age, gender, weight, height,average_sleep_time, stress_level, activity_level) values (1000, 22, 1, 166, 65, 420, 5, 1);
+insert into health_data (id, bmi_value, bmr_value, tdee_value, kg_till_normal, average_sleep_higher_limit, average_sleep_lower_limit ) values (1000, 24, 2110, 2300, 7, 5, 9);
+insert into user_data (id, age, gender, weight, height,average_sleep_time, stress_level, activity_level) values (1001, 22, 1, 166, 65, 420, 5, 1);
+insert into health_data (id, bmi_value, bmr_value, tdee_value, kg_till_normal, average_sleep_higher_limit, average_sleep_lower_limit ) values (1001, 24, 2110, 2300, 7, 5, 9);
+
+insert into health_data_diseases (health_data_id, diseases_id) values (1000, 1000);
+insert into report_data (id, ip_address, health_data_id, user_data_id) values (1000, "00:00:00:00", 1000, 1000);
+
+insert into health_data_diseases (health_data_id, diseases_id) values (1001, 1001);
+insert into report_data (id, ip_address, health_data_id, user_data_id) values (1001, "00:00:00:01", 1001, 1001);
+

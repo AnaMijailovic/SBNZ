@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HealthRiskAssessmentApplication {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(HealthRiskAssessmentApplication.class, args);
+		
 	}
 
 }

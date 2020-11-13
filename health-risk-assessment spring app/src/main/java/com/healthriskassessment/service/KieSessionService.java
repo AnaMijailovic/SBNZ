@@ -30,6 +30,12 @@ public class KieSessionService {
 		return session;
 	}
 	
+	public KieSession getReportsKieSession() {
+		KieSession session = kieContainer.newKieSession("ksession-reports");
+		configureKieSession(session);
+		return session;
+	}
+	
 	public KieSession getCepKieSession() {
 		KieSession session = kieContainer.newKieSession("ksession-cep");
 		configureKieSession(session);

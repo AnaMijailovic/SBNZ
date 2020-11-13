@@ -1,0 +1,30 @@
+package com.sample
+
+import com.healthriskassessment.model.ReportData;
+import com.healthriskassessment.model.UserDisease;
+import com.healthriskassessment.model.enums.RiskLevel;
+import com.healthriskassessment.model.enums.Gender;
+import java.util.List;
+import java.util.Set;
+
+
+query "Get by age group and gender" (String $diseaseName, RiskLevel $riskLevel, int $ageFrom, int $ageTo, Gender $gender)
+
+ // lista setova Set<UserDisease>
+ // proveri godine i pol
+ $healthDataDiseases := List() from accumulate (
+        ReportData($healthDataDisease: healthData.getDiseases, userData.getGender == $gender, 
+                   userData.getAge >= $ageFrom, userData.getAge <= $ageTo ),
+        collectList($healthDataDisease)
+        )
+  
+  // broj pronadjenih
+  // proveri naziv bolesti i nivo rizika   
+  $num := Number() from accumulate(
+        Set($userDiseases : this) from $healthDataDiseases and
+        UserDisease($disease : this, disease.getName == $diseaseName, this.getRiskLevel == $riskLevel)
+         from $userDiseases,
+        count($disease)
+    )
+
+end    

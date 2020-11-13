@@ -1,0 +1,15 @@
+.disease-report-form-root {
+    margin-top: 1%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border: solid gray 1px;
+    border-radius: 2%;
+    width: 25%;
+    background-color: #c6f7f0;
+    box-shadow: 5px 10px;
+    color: gray;
+}
+
+.full-td {
+    min-width: 100% !important;
+}

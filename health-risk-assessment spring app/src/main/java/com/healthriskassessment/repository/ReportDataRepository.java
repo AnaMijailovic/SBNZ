@@ -1,13 +1,13 @@
 package com.healthriskassessment.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.healthriskassessment.model.Disease;
+import com.healthriskassessment.model.ReportData;
 
 @Repository
-public interface DiseaseRepository extends JpaRepository<Disease, Long> {
-
-	Disease findByName(String name);
+public interface ReportDataRepository extends JpaRepository<ReportData, Long>{
 
 }

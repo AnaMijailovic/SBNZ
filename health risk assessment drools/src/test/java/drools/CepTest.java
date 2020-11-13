@@ -13,12 +13,21 @@ import org.kie.api.runtime.KieSession;
 
 //import com.healthriskassessment.event.HeartBeatEvent;
 
+//import com.healthriskassessment.event.HeartBeatEvent;
+
 public class CepTest {
-/*
+	
+	@Test
+	public void demoTest() {
+				
+		assertThat( true, equalTo(true));
+	}
+	
+
 	// Ne dodaju se HearthBeatEvents u radnu memoriju
 	// Treba da se pokrene samo pravilo Calculate stress level
 	// I da dobijena vrednost za stressLevel bude 0
-	@Test
+/*	@Test
 	public void noHeartBeatEvents() {
 
 		KieServices ks = KieServices.Factory.get();
@@ -129,6 +138,6 @@ public class CepTest {
 		Integer returnedStressLevel = (int) kieSession.getGlobal("stressLevel");
 
 		assertThat(returnedStressLevel, equalTo(0));
-	}
-*/
+	} */
+
 }

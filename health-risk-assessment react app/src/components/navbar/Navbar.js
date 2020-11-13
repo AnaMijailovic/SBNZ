@@ -28,8 +28,9 @@ export default function Navbar(props) {
 
             <Link className="link"  to="/"><Button color="inherit"><i className="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Home</Button> </Link>
             <Link className="link"  to={"/risks"}><Button color="inherit">&nbsp; &nbsp; Risks</Button> </Link>               
-                <Link className="link"  to={"/diseases"}><Button color="inherit">&nbsp; &nbsp; Diseases</Button> </Link>
-            
+            <Link className="link"  to={"/diseases"}><Button color="inherit">&nbsp; &nbsp; Diseases</Button> </Link>
+            <Link className="link"  to={"/disease-report"}><Button color="inherit">&nbsp; &nbsp; Disease Report</Button> </Link>
+
             { !props.logged && (
               <div>
                 <Link className="link"  to="/registration"><Button color="inherit"><i className="fa fa-users fa-2x" aria-hidden="true"></i>&nbsp; &nbsp; Registration</Button> </Link>

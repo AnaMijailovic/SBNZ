@@ -3,6 +3,8 @@ package com.healthriskassessment.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,8 +59,8 @@ public class RiskController {
 	}
 
 	@GetMapping(value = "/stressLevel")
-	public ResponseEntity<Integer> calculateStressLevel() {
-
+	public ResponseEntity<Integer> calculateStressLevel(HttpServletRequest request) {
+		System.out.println("Remote addr: " + request.getRemoteAddr());
 		return new ResponseEntity<>(riskService.calculateStressLevel(), HttpStatus.OK);
 	}
 	

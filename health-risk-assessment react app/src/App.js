@@ -21,6 +21,7 @@ import RiskDetails from './components/risks/RiskDetails';
 import ResultsPage from './components/results-page/ResultsPage';
 import AddDiseaseForm from './components/diseases/AddDiseaseForm';
 import UpdateRisk from './components/risks/UpdateRisk';
+import DiseaseReportPage from './components/reports/DiseaseReportPage';
 
 function App() {
 
@@ -87,6 +88,7 @@ const getRisks = () => {
             <Route exact path="/login" 
                render={(props) => <LoginForm {...props} logged={log => setIsLoggedIn(log)}  />}/>
             <Route exact path="/registration" component={RegistrationForm} />
+            <Route exact path="/disease-report" component={DiseaseReportPage} />
             <ProtectedRoute role="ADMIN" path="/admin-profile" component={AdminProfile} />
             <ProtectedRoute role="USER" path="/user-profile" component={UserProfile} />
             <ProtectedRoute role="ADMIN" path="/edit-disease/:id" component={AddDiseaseForm} />

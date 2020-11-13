@@ -26,6 +26,7 @@ public class HealthData {
 	private Long id;
 	
 	private float bmiValue;
+	
 	private BMICategory bmiCategory;
 	private float bmrValue;
 	private float tdeeValue;
@@ -36,6 +37,6 @@ public class HealthData {
 	@OneToMany
 	private Set<UserRisk> risks;
 	@ManyToMany
-	private Set<UserDisease> deseases;
+	private Set<UserDisease> diseases;
 
 }

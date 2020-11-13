@@ -84,7 +84,7 @@ public class RiskService {
 		for (int i = 0; i < 80; i++) {
 			HeartBeatEvent hbe = new HeartBeatEvent(clock.getCurrentTime());
 			kieSession.getEntryPoint("beats").insert(hbe);
-			clock.advanceTime(800 + random.nextInt(71) + 1, TimeUnit.MILLISECONDS);
+			clock.advanceTime(800 + random.nextInt(121) + 1, TimeUnit.MILLISECONDS);
 		}
 
 		System.out.println("Rules fired: " + kieSession.fireAllRules());

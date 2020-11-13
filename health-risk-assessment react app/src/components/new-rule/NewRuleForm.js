@@ -23,7 +23,7 @@ export default function NewRuleForm() {
           "fileBody": fileBody
       }
 
-      alert(JSON.stringify(postData));
+      //alert(JSON.stringify(postData));
       
      // alert(JSON.stringify(postData));
   

@@ -19,7 +19,7 @@ import com.healthriskassessment.dto.NewRuleDTO;
 @Service
 public class AddRuleService {
 	
-	public static final String RULE_PATH = "..\\..\\health risk assessment drools\\src\\main\\resources\\rules\\";
+	public static final String RULE_PATH = "..\\health risk assessment drools\\src\\main\\resources\\rules\\";
 	
 	public boolean addNewRule(NewRuleDTO dto) throws FileNotFoundException, RuntimeException, MavenInvocationException {
 		
@@ -38,7 +38,7 @@ public class AddRuleService {
 	 private void updateDroolsJar () throws RuntimeException, MavenInvocationException {
 
 	        InvocationRequest req = new DefaultInvocationRequest();
-	        req.setPomFile( new File( "..\\..\\health risk assessment drools\\pom.xml" ) );
+	        req.setPomFile( new File( "..\\health risk assessment drools\\pom.xml" ) );
 	        
 	        // add goals
 	        List<String> goals = new ArrayList<String>();
